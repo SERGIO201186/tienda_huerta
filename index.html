@@ -7,41 +7,57 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;700&display=swap');
 
+  /* ------------------------------------------------------------
+     PALETA DE MARCA — cambia estos valores por los colores de
+     Servicios Funerarios Huerta y se actualiza todo el sitio.
+     ------------------------------------------------------------ */
+  :root {
+    --brand-primary: #3F5645;       /* verde oscuro provisional */
+    --brand-primary-soft: #E4EAE3;
+    --brand-secondary: #B8902E;     /* dorado provisional */
+    --brand-secondary-soft: #F6EFD9;
+    --bg: #FAF7F2;
+    --text: #2D2A26;
+    --muted: #7A746C;
+    --border: #E4DDD2;
+    --card-bg: #FFFFFF;
+  }
+
   * { box-sizing: border-box; }
   body {
     margin: 0;
     font-family: 'DM Sans', sans-serif;
-    color: #2D2A26;
-    background: #FAF7F2;
+    color: var(--text);
+    background: var(--bg);
   }
   button { cursor: pointer; font-family: inherit; }
   button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
-    outline: 2px solid #2D2A26; outline-offset: 2px;
+    outline: 2px solid var(--text); outline-offset: 2px;
   }
 
   header { max-width: 960px; margin: 0 auto; padding: 28px 20px 0; }
   .header-row { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
-  h1 { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; margin: 0; letter-spacing: 0.5px; }
-  .subtitle { margin: 4px 0 0; font-size: 14px; color: #7A746C; }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; margin: 0; letter-spacing: 0.5px; color: var(--brand-primary); }
+  .subtitle { margin: 4px 0 0; font-size: 14px; color: var(--muted); }
 
   .admin-toggle {
     display: flex; align-items: center; gap: 6px; padding: 8px 14px;
-    border-radius: 999px; border: 1px solid #D9D2C7; background: #FFFFFF;
-    color: #2D2A26; font-size: 13px; font-weight: 500;
+    border-radius: 999px; border: 1px solid var(--border); background: var(--card-bg);
+    color: var(--text); font-size: 13px; font-weight: 500;
   }
-  .admin-toggle.active { background: #2D2A26; color: #FAF7F2; border-color: #2D2A26; }
+  .admin-toggle.active { background: var(--brand-primary); color: #FFFFFF; border-color: var(--brand-primary); }
 
   .tabs { display: flex; gap: 10px; margin-top: 24px; }
   .tab {
     flex: 1; display: flex; align-items: center; gap: 10px; padding: 14px 16px;
-    border-radius: 14px; border: 1px solid #E4DDD2; background: #FFFFFF;
+    border-radius: 14px; border: 1px solid var(--border); background: var(--card-bg);
     transition: all 0.25s ease; text-align: left;
   }
-  .tab.active.futuro { border: 1.5px solid #6F8F73; background: #E7EEE6; }
-  .tab.active.inmediato { border: 1.5px solid #B8714F; background: #F3E5DB; }
+  .tab.active.futuro { border: 1.5px solid var(--brand-primary); background: var(--brand-primary-soft); }
+  .tab.active.inmediato { border: 1.5px solid var(--brand-secondary); background: var(--brand-secondary-soft); }
   .tab-icon { font-size: 20px; }
   .tab-title { font-weight: 700; font-size: 14px; }
-  .tab-sub { font-size: 12px; color: #8A847B; }
+  .tab-sub { font-size: 12px; color: var(--muted); }
 
   main { max-width: 960px; margin: 0 auto; padding: 24px 20px 80px; }
 
@@ -49,54 +65,64 @@
     display: flex; align-items: center; gap: 8px; margin-bottom: 18px; padding: 10px 16px;
     border-radius: 10px; border: none; color: #FFFFFF; font-size: 14px; font-weight: 500;
   }
-  .add-btn.futuro { background: #6F8F73; }
-  .add-btn.inmediato { background: #B8714F; }
+  .add-btn.futuro { background: var(--brand-primary); }
+  .add-btn.inmediato { background: var(--brand-secondary); }
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
   .card {
-    background: #FFFFFF; border: 1px solid #EFE9DF; border-radius: 14px; padding: 18px;
-    display: flex; flex-direction: column; gap: 8px;
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+    display: flex; flex-direction: column;
   }
+  .card-img {
+    width: 100%; height: 140px; object-fit: cover; display: block; background: var(--brand-primary-soft);
+  }
+  .card-img-placeholder {
+    width: 100%; height: 140px; display: flex; align-items: center; justify-content: center;
+    background: var(--brand-primary-soft); color: var(--brand-primary); font-size: 28px;
+  }
+  .card-body { padding: 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
   .card .cat { font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; }
-  .card.futuro .cat { color: #6F8F73; }
-  .card.inmediato .cat { color: #B8714F; }
+  .card.futuro .cat { color: var(--brand-primary); }
+  .card.inmediato .cat { color: var(--brand-secondary); }
   .card h3 { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 600; margin: 0; }
-  .card p { font-size: 13px; color: #7A746C; margin: 0; line-height: 1.5; flex: 1; }
+  .card p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; flex: 1; }
   .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
   .price { font-size: 19px; font-weight: 700; }
 
   .request-btn { border: none; color: #FFFFFF; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 500; }
-  .request-btn.futuro { background: #6F8F73; }
-  .request-btn.inmediato { background: #B8714F; }
+  .request-btn.futuro { background: var(--brand-primary); }
+  .request-btn.inmediato { background: var(--brand-secondary); }
 
-  .icon-btn { border: 1px solid #E4DDD2; background: #FFFFFF; border-radius: 8px; padding: 7px; font-size: 14px; }
-  .icon-btn.danger { color: #B8714F; }
+  .icon-btn { border: 1px solid var(--border); background: var(--card-bg); border-radius: 8px; padding: 7px; font-size: 14px; }
+  .icon-btn.danger { color: var(--brand-secondary); }
 
-  .empty, .loading { text-align: center; padding: 60px 20px; color: #8A847B; }
+  .empty, .loading { text-align: center; padding: 60px 20px; color: var(--muted); }
 
   .modal-overlay {
     position: fixed; inset: 0; background: rgba(45,42,38,0.4);
     display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50;
   }
   .modal {
-    background: #FFFFFF; border-radius: 16px; padding: 24px; width: 100%; max-width: 420px;
-    display: flex; flex-direction: column; gap: 12px;
+    background: var(--card-bg); border-radius: 16px; padding: 24px; width: 100%; max-width: 420px;
+    display: flex; flex-direction: column; gap: 12px; max-height: 90vh; overflow-y: auto;
   }
   .modal h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; margin: 0; }
   .modal-header { display: flex; justify-content: space-between; align-items: center; }
-  .modal label { font-size: 12px; font-weight: 600; color: #8A847B; }
+  .modal label { font-size: 12px; font-weight: 600; color: var(--muted); }
+  .modal .hint { font-size: 11px; color: var(--muted); font-weight: 400; display: block; margin-top: 4px; }
   .modal input, .modal select, .modal textarea {
     width: 100%; margin-top: 4px; padding: 10px 12px; border-radius: 8px;
-    border: 1px solid #E4DDD2; font-size: 14px; font-family: inherit;
+    border: 1px solid var(--border); font-size: 14px; font-family: inherit;
   }
   .modal textarea { resize: vertical; }
+  .preview-img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-top: 8px; border: 1px solid var(--border); display: none; }
   .save-btn {
     margin-top: 6px; display: flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 12px; border-radius: 10px; border: none; background: #2D2A26; color: #FAF7F2;
+    padding: 12px; border-radius: 10px; border: none; background: var(--brand-primary); color: #FFFFFF;
     font-size: 14px; font-weight: 600;
   }
   .close-btn { border: none; background: none; padding: 4px; font-size: 18px; }
-  .banner { background: #F3E5DB; color: #7A3E1F; padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; }
+  .banner { background: var(--brand-secondary-soft); color: #7A4E0F; padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; }
 </style>
 </head>
 <body>
@@ -164,6 +190,12 @@
       <input id="f_precio" type="number" min="0" required />
     </label>
 
+    <label>Imagen (URL de Google Drive u otra fuente)
+      <input id="f_imagen" placeholder="https://drive.google.com/file/d/.../view?usp=sharing" />
+      <span class="hint">En Drive: clic derecho → Compartir → "Cualquier persona con el enlace". Pega aquí ese enlace, se convierte automáticamente.</span>
+    </label>
+    <img id="imgPreview" class="preview-img" alt="Vista previa" />
+
     <input type="hidden" id="f_id" />
     <button type="submit" class="save-btn">Guardar</button>
   </form>
@@ -192,6 +224,8 @@
   const bannerEl = document.getElementById('banner');
   const modalOverlay = document.getElementById('modalOverlay');
   const productForm = document.getElementById('productForm');
+  const imgPreview = document.getElementById('imgPreview');
+  const imagenInput = document.getElementById('f_imagen');
 
   function formatPrice(n) {
     return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(n);
@@ -199,6 +233,24 @@
 
   function showBanner(msg) {
     bannerEl.innerHTML = msg ? `<div class="banner">${msg}</div>` : '';
+  }
+
+  // ------------------------------------------------------------
+  // Convierte un enlace normal de Google Drive en una URL de
+  // imagen directa que puede usarse en <img src="...">
+  // ------------------------------------------------------------
+  function toDirectImageUrl(url) {
+    if (!url) return '';
+    const trimmed = url.trim();
+    const driveMatch = trimmed.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (driveMatch) {
+      return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+    }
+    const idParamMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (idParamMatch && trimmed.includes('drive.google.com')) {
+      return `https://drive.google.com/uc?export=view&id=${idParamMatch[1]}`;
+    }
+    return trimmed;
   }
 
   // ------------------------------------------------------------
@@ -251,14 +303,22 @@
          </div>`
       : `<button class="request-btn ${p.segment}">Solicitar información</button>`;
 
+    const imgUrl = toDirectImageUrl(p.imagen);
+    const media = imgUrl
+      ? `<img class="card-img" src="${imgUrl}" alt="${p.nombre}" onerror="this.outerHTML='<div class=&quot;card-img-placeholder&quot;>🕊️</div>'" />`
+      : `<div class="card-img-placeholder">🕊️</div>`;
+
     return `
       <div class="card ${p.segment}">
-        <span class="cat">${p.categoria || 'General'}</span>
-        <h3>${p.nombre}</h3>
-        <p>${p.descripcion || ''}</p>
-        <div class="card-footer">
-          <span class="price">${formatPrice(p.precio)}</span>
-          ${actions}
+        ${media}
+        <div class="card-body">
+          <span class="cat">${p.categoria || 'General'}</span>
+          <h3>${p.nombre}</h3>
+          <p>${p.descripcion || ''}</p>
+          <div class="card-footer">
+            <span class="price">${formatPrice(p.precio)}</span>
+            ${actions}
+          </div>
         </div>
       </div>
     `;
@@ -301,8 +361,23 @@
     document.getElementById('f_nombre').value = product ? product.nombre : '';
     document.getElementById('f_descripcion').value = product ? product.descripcion : '';
     document.getElementById('f_precio').value = product ? product.precio : '';
+    imagenInput.value = product ? (product.imagen || '') : '';
+    updatePreview();
     modalOverlay.style.display = 'flex';
   }
+
+  function updatePreview() {
+    const url = toDirectImageUrl(imagenInput.value);
+    if (url) {
+      imgPreview.src = url;
+      imgPreview.style.display = 'block';
+    } else {
+      imgPreview.style.display = 'none';
+      imgPreview.src = '';
+    }
+  }
+  imagenInput.addEventListener('input', updatePreview);
+  imgPreview.addEventListener('error', () => { imgPreview.style.display = 'none'; });
 
   document.getElementById('closeModal').addEventListener('click', () => {
     modalOverlay.style.display = 'none';
@@ -337,6 +412,7 @@
       nombre: document.getElementById('f_nombre').value,
       descripcion: document.getElementById('f_descripcion').value,
       precio: Number(document.getElementById('f_precio').value) || 0,
+      imagen: toDirectImageUrl(imagenInput.value),
     };
 
     const exists = products.some(p => p.id === payload.id);
