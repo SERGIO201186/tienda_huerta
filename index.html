@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Memoria — Servicios Funerarios</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;700&display=swap');
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+    color: #2D2A26;
+    background: #FAF7F2;
+  }
+  button { cursor: pointer; font-family: inherit; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+    outline: 2px solid #2D2A26; outline-offset: 2px;
+  }
+
+  header { max-width: 960px; margin: 0 auto; padding: 28px 20px 0; }
+  .header-row { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; margin: 0; letter-spacing: 0.5px; }
+  .subtitle { margin: 4px 0 0; font-size: 14px; color: #7A746C; }
+
+  .admin-toggle {
+    display: flex; align-items: center; gap: 6px; padding: 8px 14px;
+    border-radius: 999px; border: 1px solid #D9D2C7; background: #FFFFFF;
+    color: #2D2A26; font-size: 13px; font-weight: 500;
+  }
+  .admin-toggle.active { background: #2D2A26; color: #FAF7F2; border-color: #2D2A26; }
+
+  .tabs { display: flex; gap: 10px; margin-top: 24px; }
+  .tab {
+    flex: 1; display: flex; align-items: center; gap: 10px; padding: 14px 16px;
+    border-radius: 14px; border: 1px solid #E4DDD2; background: #FFFFFF;
+    transition: all 0.25s ease; text-align: left;
+  }
+  .tab.active.futuro { border: 1.5px solid #6F8F73; background: #E7EEE6; }
+  .tab.active.inmediato { border: 1.5px solid #B8714F; background: #F3E5DB; }
+  .tab-icon { font-size: 20px; }
+  .tab-title { font-weight: 700; font-size: 14px; }
+  .tab-sub { font-size: 12px; color: #8A847B; }
+
+  main { max-width: 960px; margin: 0 auto; padding: 24px 20px 80px; }
+
+  .add-btn {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 18px; padding: 10px 16px;
+    border-radius: 10px; border: none; color: #FFFFFF; font-size: 14px; font-weight: 500;
+  }
+  .add-btn.futuro { background: #6F8F73; }
+  .add-btn.inmediato { background: #B8714F; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .card {
+    background: #FFFFFF; border: 1px solid #EFE9DF; border-radius: 14px; padding: 18px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .card .cat { font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; }
+  .card.futuro .cat { color: #6F8F73; }
+  .card.inmediato .cat { color: #B8714F; }
+  .card h3 { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 600; margin: 0; }
+  .card p { font-size: 13px; color: #7A746C; margin: 0; line-height: 1.5; flex: 1; }
+  .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .price { font-size: 19px; font-weight: 700; }
+
+  .request-btn { border: none; color: #FFFFFF; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 500; }
+  .request-btn.futuro { background: #6F8F73; }
+  .request-btn.inmediato { background: #B8714F; }
+
+  .icon-btn { border: 1px solid #E4DDD2; background: #FFFFFF; border-radius: 8px; padding: 7px; font-size: 14px; }
+  .icon-btn.danger { color: #B8714F; }
+
+  .empty, .loading { text-align: center; padding: 60px 20px; color: #8A847B; }
+
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(45,42,38,0.4);
+    display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50;
+  }
+  .modal {
+    background: #FFFFFF; border-radius: 16px; padding: 24px; width: 100%; max-width: 420px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .modal h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; margin: 0; }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; }
+  .modal label { font-size: 12px; font-weight: 600; color: #8A847B; }
+  .modal input, .modal select, .modal textarea {
+    width: 100%; margin-top: 4px; padding: 10px 12px; border-radius: 8px;
+    border: 1px solid #E4DDD2; font-size: 14px; font-family: inherit;
+  }
+  .modal textarea { resize: vertical; }
+  .save-btn {
+    margin-top: 6px; display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px; border-radius: 10px; border: none; background: #2D2A26; color: #FAF7F2;
+    font-size: 14px; font-weight: 600;
+  }
+  .close-btn { border: none; background: none; padding: 4px; font-size: 18px; }
+  .banner { background: #F3E5DB; color: #7A3E1F; padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div>
+      <h1>Memoria</h1>
+      <p class="subtitle">Servicios funerarios, con acompañamiento en cada etapa</p>
+    </div>
+    <button class="admin-toggle" id="adminToggle">Administrar</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab futuro" data-segment="futuro">
+      <span class="tab-icon">🌱</span>
+      <div>
+        <div class="tab-title">Planes a Futuro</div>
+        <div class="tab-sub">Previsión y planeación</div>
+      </div>
+    </button>
+    <button class="tab inmediato" data-segment="inmediato">
+      <span class="tab-icon">🕯️</span>
+      <div>
+        <div class="tab-title">Servicio Inmediato</div>
+        <div class="tab-sub">Atención de urgencia</div>
+      </div>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div id="banner"></div>
+  <button class="add-btn" id="addBtn" style="display:none"></button>
+  <div id="content" class="loading">Cargando catálogo…</div>
+</main>
+
+<div class="modal-overlay" id="modalOverlay" style="display:none">
+  <form class="modal" id="productForm">
+    <div class="modal-header">
+      <h2 id="modalTitle">Nuevo producto</h2>
+      <button type="button" class="close-btn" id="closeModal">✕</button>
+    </div>
+
+    <label>Segmento
+      <select id="f_segment">
+        <option value="futuro">Planes a Futuro</option>
+        <option value="inmediato">Servicio Inmediato</option>
+      </select>
+    </label>
+
+    <label>Categoría
+      <input id="f_categoria" placeholder="Ej. Plan de previsión, Cremación..." />
+    </label>
+
+    <label>Nombre del producto
+      <input id="f_nombre" required />
+    </label>
+
+    <label>Descripción
+      <textarea id="f_descripcion" rows="3"></textarea>
+    </label>
+
+    <label>Precio (MXN)
+      <input id="f_precio" type="number" min="0" required />
+    </label>
+
+    <input type="hidden" id="f_id" />
+    <button type="submit" class="save-btn">Guardar</button>
+  </form>
+</div>
+
+<script>
+  // ------------------------------------------------------------
+  // CONFIGURA AQUÍ la URL de tu Apps Script publicado como Web App
+  // ------------------------------------------------------------
+  const API_URL = 'https://script.google.com/macros/s/AKfycbyfVT4IhQuANcbnhiVZIf4lVV1iD4Xx5gWR__SpKBVfzbziEZAShkutl11Km8SeDg33Uw/exec';
+
+  // Contraseña simple para entrar al modo administrador (cambia esto)
+  const ADMIN_PASSWORD = 'Danna.0203';
+
+  const SEGMENTS = {
+    futuro: { label: 'Planes a Futuro' },
+    inmediato: { label: 'Servicio Inmediato' },
+  };
+
+  let products = [];
+  let segment = 'futuro';
+  let adminMode = false;
+
+  const contentEl = document.getElementById('content');
+  const addBtn = document.getElementById('addBtn');
+  const bannerEl = document.getElementById('banner');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const productForm = document.getElementById('productForm');
+
+  function formatPrice(n) {
+    return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(n);
+  }
+
+  function showBanner(msg) {
+    bannerEl.innerHTML = msg ? `<div class="banner">${msg}</div>` : '';
+  }
+
+  // ------------------------------------------------------------
+  // Carga inicial del catálogo
+  // ------------------------------------------------------------
+  async function loadProducts() {
+    contentEl.innerHTML = '<div class="loading">Cargando catálogo…</div>';
+    try {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      products = data.map(p => ({ ...p, precio: Number(p.precio) }));
+    } catch (err) {
+      showBanner('No se pudo conectar con el catálogo. Revisa la URL de la API.');
+      products = [];
+    }
+    render();
+  }
+
+  // ------------------------------------------------------------
+  // Render
+  // ------------------------------------------------------------
+  function render() {
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.segment === segment);
+    });
+
+    if (adminMode) {
+      addBtn.style.display = 'flex';
+      addBtn.className = `add-btn ${segment}`;
+      addBtn.textContent = `+ Agregar producto en ${SEGMENTS[segment].label}`;
+    } else {
+      addBtn.style.display = 'none';
+    }
+
+    const visible = products.filter(p => p.segment === segment);
+
+    if (visible.length === 0) {
+      contentEl.innerHTML = `<div class="empty">Todavía no hay productos en este segmento.${adminMode ? '<br/>Usa "Agregar producto" para crear el primero.' : ''}</div>`;
+      return;
+    }
+
+    contentEl.innerHTML = `<div class="grid">${visible.map(cardHtml).join('')}</div>`;
+  }
+
+  function cardHtml(p) {
+    const actions = adminMode
+      ? `<div style="display:flex; gap:6px;">
+           <button class="icon-btn" onclick="editProduct('${p.id}')">✎</button>
+           <button class="icon-btn danger" onclick="deleteProduct('${p.id}')">🗑</button>
+         </div>`
+      : `<button class="request-btn ${p.segment}">Solicitar información</button>`;
+
+    return `
+      <div class="card ${p.segment}">
+        <span class="cat">${p.categoria || 'General'}</span>
+        <h3>${p.nombre}</h3>
+        <p>${p.descripcion || ''}</p>
+        <div class="card-footer">
+          <span class="price">${formatPrice(p.precio)}</span>
+          ${actions}
+        </div>
+      </div>
+    `;
+  }
+
+  // ------------------------------------------------------------
+  // Eventos: tabs y modo administrador
+  // ------------------------------------------------------------
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      segment = tab.dataset.segment;
+      render();
+    });
+  });
+
+  document.getElementById('adminToggle').addEventListener('click', () => {
+    if (!adminMode) {
+      const pass = prompt('Contraseña de administrador:');
+      if (pass !== ADMIN_PASSWORD) {
+        if (pass !== null) alert('Contraseña incorrecta.');
+        return;
+      }
+    }
+    adminMode = !adminMode;
+    document.getElementById('adminToggle').classList.toggle('active', adminMode);
+    document.getElementById('adminToggle').textContent = adminMode ? 'Salir de administración' : 'Administrar';
+    render();
+  });
+
+  addBtn.addEventListener('click', () => openModal());
+
+  // ------------------------------------------------------------
+  // Modal de creación / edición
+  // ------------------------------------------------------------
+  function openModal(product) {
+    document.getElementById('modalTitle').textContent = product ? 'Editar producto' : 'Nuevo producto';
+    document.getElementById('f_id').value = product ? product.id : 'p' + Date.now();
+    document.getElementById('f_segment').value = product ? product.segment : segment;
+    document.getElementById('f_categoria').value = product ? product.categoria : '';
+    document.getElementById('f_nombre').value = product ? product.nombre : '';
+    document.getElementById('f_descripcion').value = product ? product.descripcion : '';
+    document.getElementById('f_precio').value = product ? product.precio : '';
+    modalOverlay.style.display = 'flex';
+  }
+
+  document.getElementById('closeModal').addEventListener('click', () => {
+    modalOverlay.style.display = 'none';
+  });
+
+  window.editProduct = function(id) {
+    const p = products.find(p => p.id === id);
+    if (p) openModal(p);
+  };
+
+  window.deleteProduct = async function(id) {
+    if (!confirm('¿Eliminar este producto?')) return;
+    try {
+      await fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'delete', id }),
+      });
+      products = products.filter(p => p.id !== id);
+      render();
+    } catch (err) {
+      showBanner('No se pudo eliminar el producto. Intenta de nuevo.');
+    }
+  };
+
+  productForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      id: document.getElementById('f_id').value,
+      segment: document.getElementById('f_segment').value,
+      categoria: document.getElementById('f_categoria').value,
+      nombre: document.getElementById('f_nombre').value,
+      descripcion: document.getElementById('f_descripcion').value,
+      precio: Number(document.getElementById('f_precio').value) || 0,
+    };
+
+    const exists = products.some(p => p.id === payload.id);
+    payload.action = exists ? 'update' : 'add';
+
+    try {
+      await fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+
+      if (exists) {
+        products = products.map(p => (p.id === payload.id ? payload : p));
+      } else {
+        products.push(payload);
+      }
+      modalOverlay.style.display = 'none';
+      render();
+    } catch (err) {
+      showBanner('No se pudo guardar el producto. Intenta de nuevo.');
+    }
+  });
+
+  // ------------------------------------------------------------
+  loadProducts();
+</script>
+
+</body>
+</html>
