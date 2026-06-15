@@ -16,6 +16,8 @@
     --brand-primary-soft: #E4EAE3;
     --brand-secondary: #B8902E;     /* dorado provisional */
     --brand-secondary-soft: #F6EFD9;
+    --brand-tertiary: #8B6F47;      /* marrón provisional para "Otros artículos" */
+    --brand-tertiary-soft: #EFE6D8;
     --bg: #FAF7F2;
     --text: #2D2A26;
     --muted: #7A746C;
@@ -55,6 +57,7 @@
   }
   .tab.active.futuro { border: 1.5px solid var(--brand-primary); background: var(--brand-primary-soft); }
   .tab.active.inmediato { border: 1.5px solid var(--brand-secondary); background: var(--brand-secondary-soft); }
+  .tab.active.otros { border: 1.5px solid var(--brand-tertiary); background: var(--brand-tertiary-soft); }
   .tab-icon { font-size: 20px; }
   .tab-title { font-weight: 700; font-size: 14px; }
   .tab-sub { font-size: 12px; color: var(--muted); }
@@ -67,6 +70,7 @@
   }
   .add-btn.futuro { background: var(--brand-primary); }
   .add-btn.inmediato { background: var(--brand-secondary); }
+  .add-btn.otros { background: var(--brand-tertiary); }
 
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
   .card {
@@ -84,6 +88,7 @@
   .card .cat { font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; }
   .card.futuro .cat { color: var(--brand-primary); }
   .card.inmediato .cat { color: var(--brand-secondary); }
+  .card.otros .cat { color: var(--brand-tertiary); }
   .card h3 { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 600; margin: 0; }
   .card p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5; flex: 1; }
   .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
@@ -92,6 +97,7 @@
   .request-btn { border: none; color: #FFFFFF; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 500; }
   .request-btn.futuro { background: var(--brand-primary); }
   .request-btn.inmediato { background: var(--brand-secondary); }
+  .request-btn.otros { background: var(--brand-tertiary); }
 
   .icon-btn { border: 1px solid var(--border); background: var(--card-bg); border-radius: 8px; padding: 7px; font-size: 14px; }
   .icon-btn.danger { color: var(--brand-secondary); }
@@ -207,6 +213,13 @@
         <div class="tab-sub">Atención de urgencia</div>
       </div>
     </button>
+    <button class="tab otros" data-segment="otros">
+      <span class="tab-icon">🛍️</span>
+      <div>
+        <div class="tab-title">Otros Artículos</div>
+        <div class="tab-sub">Flores, urnas y más</div>
+      </div>
+    </button>
   </div>
 </header>
 
@@ -257,6 +270,7 @@
       <select id="f_segment">
         <option value="futuro">Planes a Futuro</option>
         <option value="inmediato">Servicio Inmediato</option>
+        <option value="otros">Otros Artículos</option>
       </select>
     </label>
 
@@ -299,6 +313,7 @@
   const SEGMENTS = {
     futuro: { label: 'Planes a Futuro' },
     inmediato: { label: 'Servicio Inmediato' },
+    otros: { label: 'Otros Artículos' },
   };
 
   let products = [];
@@ -330,11 +345,15 @@
     const trimmed = url.trim();
     const driveMatch = trimmed.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
     if (driveMatch) {
-      return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+      return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
     }
     const idParamMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
     if (idParamMatch && trimmed.includes('drive.google.com')) {
-      return `https://drive.google.com/uc?export=view&id=${idParamMatch[1]}`;
+      return `https://lh3.googleusercontent.com/d/${idParamMatch[1]}`;
+    }
+    const lh3Match = trimmed.match(/lh3\.googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)/);
+    if (lh3Match) {
+      return `https://lh3.googleusercontent.com/d/${lh3Match[1]}`;
     }
     return trimmed;
   }
@@ -346,10 +365,16 @@
     contentEl.innerHTML = '<div class="loading">Cargando catálogo…</div>';
     try {
       const res = await fetch(API_URL);
+      if (!res.ok) {
+        throw new Error('HTTP ' + res.status);
+      }
       const data = await res.json();
+      if (!Array.isArray(data)) {
+        throw new Error('La respuesta no es una lista de productos. Revisa que la hoja "Productos" tenga datos y encabezados correctos.');
+      }
       products = data.map(p => ({ ...p, precio: Number(p.precio) }));
     } catch (err) {
-      showBanner('No se pudo conectar con el catálogo. Revisa la URL de la API.');
+      showBanner('No se pudo cargar el catálogo (' + err.message + '). Revisa la URL de la API y los permisos del despliegue.');
       products = [];
     }
     render();
