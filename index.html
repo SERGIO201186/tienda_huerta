@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Memoria — Servicios Funerarios</title>
+<title>Servicios Funerarios Huerta</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;700&display=swap');
 
@@ -37,7 +37,7 @@
 
   header { max-width: 960px; margin: 0 auto; padding: 28px 20px 0; }
   .header-row { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
-  h1 { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; margin: 0; letter-spacing: 0.5px; color: var(--brand-primary); }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; margin: 0; letter-spacing: 0.5px; color: var(--brand-primary); line-height: 1.15; }
   .subtitle { margin: 4px 0 0; font-size: 14px; color: var(--muted); }
 
   .admin-toggle {
@@ -123,6 +123,60 @@
   }
   .close-btn { border: none; background: none; padding: 4px; font-size: 18px; }
   .banner { background: var(--brand-secondary-soft); color: #7A4E0F; padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; }
+
+  /* ------------------------------------------------------------
+     CONTACTO FLOTANTE (WhatsApp / Facebook)
+     ------------------------------------------------------------ */
+  .contact-fab {
+    position: fixed; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 10px; z-index: 40;
+  }
+  .fab-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 50%; color: #FFFFFF; text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18); font-size: 24px;
+  }
+  .fab-btn.whatsapp { background: #3FA047; }
+  .fab-btn.facebook { background: #3B5998; }
+
+  /* ------------------------------------------------------------
+     PIE DE PÁGINA
+     ------------------------------------------------------------ */
+  footer {
+    background: var(--brand-primary); color: #FFFFFF; margin-top: 40px;
+    padding: 32px 20px 90px;
+  }
+  .footer-inner { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+  .footer-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; margin: 0; }
+  .footer-info { display: flex; flex-direction: column; gap: 6px; font-size: 14px; opacity: 0.92; }
+  .footer-info a { color: #FFFFFF; text-decoration: underline; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+  .footer-link-btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px;
+    border-radius: 999px; text-decoration: none; color: #FFFFFF; font-size: 13px; font-weight: 600;
+  }
+  .footer-link-btn.whatsapp { background: #3FA047; }
+  .footer-link-btn.facebook { background: #4267B2; }
+
+  /* ------------------------------------------------------------
+     RESPONSIVO — tablets y celulares
+     ------------------------------------------------------------ */
+  @media (max-width: 720px) {
+    h1 { font-size: 28px; }
+    .subtitle { font-size: 13px; }
+    .tabs { flex-direction: column; }
+    .grid { grid-template-columns: 1fr; }
+    .modal { max-width: 100%; }
+    .footer-title { font-size: 20px; }
+    .contact-fab { right: 12px; bottom: 12px; }
+    .fab-btn { width: 48px; height: 48px; font-size: 22px; }
+  }
+
+  @media (max-width: 420px) {
+    header, main, .footer-inner { padding-left: 14px; padding-right: 14px; }
+    .header-row { gap: 10px; }
+    .admin-toggle { font-size: 12px; padding: 7px 12px; }
+    .card-img, .card-img-placeholder { height: 120px; }
+  }
 </style>
 </head>
 <body>
@@ -130,8 +184,8 @@
 <header>
   <div class="header-row">
     <div>
-      <h1>Memoria</h1>
-      <p class="subtitle">Servicios funerarios, con acompañamiento en cada etapa</p>
+      <h1>Servicios Funerarios Huerta</h1>
+      <p class="subtitle">Acompañamiento y servicio en cada etapa, en Xalapa, Veracruz</p>
     </div>
     <button class="admin-toggle" id="adminToggle">Administrar</button>
   </div>
@@ -159,6 +213,30 @@
   <button class="add-btn" id="addBtn" style="display:none"></button>
   <div id="content" class="loading">Cargando catálogo…</div>
 </main>
+
+<footer>
+  <div class="footer-inner">
+    <h2 class="footer-title">Servicios Funerarios Huerta</h2>
+    <div class="footer-info">
+      <span>📍 Calle Nicolás Bravo No. 11, Zona Centro, Xalapa, Veracruz</span>
+      <span>☎️ Teléfono: <a href="tel:+522284684283">228 468 4283</a></span>
+      <span>💬 WhatsApp: <a href="https://wa.me/522281845114" target="_blank" rel="noopener">228 184 5114</a></span>
+    </div>
+    <div class="footer-links">
+      <a class="footer-link-btn whatsapp" href="https://wa.me/522281845114" target="_blank" rel="noopener">
+        💬 Escríbenos por WhatsApp
+      </a>
+      <a class="footer-link-btn facebook" href="https://www.facebook.com/SERVHUERTA" target="_blank" rel="noopener">
+        📘 Síguenos en Facebook
+      </a>
+    </div>
+  </div>
+</footer>
+
+<div class="contact-fab">
+  <a class="fab-btn whatsapp" href="https://wa.me/522281845114" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+  <a class="fab-btn facebook" href="https://www.facebook.com/SERVHUERTA" target="_blank" rel="noopener" aria-label="Facebook">📘</a>
+</div>
 
 <div class="modal-overlay" id="modalOverlay" style="display:none">
   <form class="modal" id="productForm">
@@ -205,10 +283,10 @@
   // ------------------------------------------------------------
   // CONFIGURA AQUÍ la URL de tu Apps Script publicado como Web App
   // ------------------------------------------------------------
-  const API_URL = 'https://script.google.com/macros/s/AKfycbwFRCx2W4c3TYXIBF5skip7Gh9XyEcCnB9It-nx6PypSleK9UgJpZYUEM-Gfrs7tQPZFg/exec';
+  const API_URL = 'https://script.google.com/macros/s/TU_ID_DE_DESPLIEGUE/exec';
 
   // Contraseña simple para entrar al modo administrador (cambia esto)
-  const ADMIN_PASSWORD = 'Danna.0203';
+  const ADMIN_PASSWORD = 'cambia-esta-clave';
 
   const SEGMENTS = {
     futuro: { label: 'Planes a Futuro' },
