@@ -122,6 +122,23 @@
   }
   .modal textarea { resize: vertical; }
   .preview-img { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-top: 8px; border: 1px solid var(--border); display: none; }
+
+  .sku-field { display: flex; gap: 6px; margin-top: 4px; }
+  .sku-field input {
+    margin-top: 0; flex: 1; background: var(--bg); color: var(--text); font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .copy-btn {
+    padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--card-bg); font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap;
+  }
+  .copy-btn.copied { background: var(--brand-primary); color: #FFFFFF; border-color: var(--brand-primary); }
+
+  .card-sku {
+    display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted);
+    font-family: monospace; letter-spacing: 0.5px;
+  }
+  .card-sku .copy-btn { padding: 3px 8px; font-size: 11px; font-family: 'DM Sans', sans-serif; }
   .save-btn {
     margin-top: 6px; display: flex; align-items: center; justify-content: center; gap: 8px;
     padding: 12px; border-radius: 10px; border: none; background: var(--brand-primary); color: #FFFFFF;
@@ -195,7 +212,7 @@
       <h1>Servicios Funerarios Huerta</h1>
       <p class="subtitle">Acompañamiento y servicio en cada etapa, en Xalapa, Veracruz</p>
     </div>
-    <button class="admin-toggle" id="adminToggle">Administrar</button>
+    <button class="admin-toggle" id="adminToggle" style="display:none">Administrar</button>
   </div>
 
   <div class="tabs">
@@ -296,7 +313,14 @@
     </label>
     <img id="imgPreview" class="preview-img" alt="Vista previa" />
 
-    <input type="hidden" id="f_id" />
+    <label>Código del producto (SKU)
+      <div class="sku-field">
+        <input id="f_id" readonly />
+        <button type="button" class="copy-btn" id="copySkuBtn">Copiar</button>
+      </div>
+      <span class="hint">Usa este código para referenciar el producto desde tus apps de ventas. Se genera automáticamente y no cambia.</span>
+    </label>
+
     <button type="submit" class="save-btn">Guardar</button>
   </form>
 </div>
@@ -327,6 +351,16 @@
   const productForm = document.getElementById('productForm');
   const imgPreview = document.getElementById('imgPreview');
   const imagenInput = document.getElementById('f_imagen');
+  const adminToggleBtn = document.getElementById('adminToggle');
+
+  // ------------------------------------------------------------
+  // El botón "Administrar" solo se muestra si la URL incluye
+  // ?admin=1, para que los clientes nunca lo vean.
+  // ------------------------------------------------------------
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('admin') === '1') {
+    adminToggleBtn.style.display = 'flex';
+  }
 
   function formatPrice(n) {
     return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(n);
@@ -334,6 +368,55 @@
 
   function showBanner(msg) {
     bannerEl.innerHTML = msg ? `<div class="banner">${msg}</div>` : '';
+  }
+
+  // ------------------------------------------------------------
+  // Generación de códigos (SKU) legibles por segmento, p.ej. FUT-001
+  // ------------------------------------------------------------
+  const SKU_PREFIX = { futuro: 'FUT', inmediato: 'INM', otros: 'OTR' };
+
+  function generateSku(segmentKey) {
+    const prefix = SKU_PREFIX[segmentKey] || 'GEN';
+    const pattern = new RegExp('^' + prefix + '-(\\d+)$');
+    let max = 0;
+    products.forEach(p => {
+      const match = String(p.id).match(pattern);
+      if (match) {
+        const num = parseInt(match[1], 10);
+        if (num > max) max = num;
+      }
+    });
+    const next = String(max + 1).padStart(3, '0');
+    return `${prefix}-${next}`;
+  }
+
+  function copyToClipboard(text, btn) {
+    const done = () => {
+      if (!btn) return;
+      const original = btn.textContent;
+      btn.textContent = '¡Copiado!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = original;
+        btn.classList.remove('copied');
+      }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+    } else {
+      fallbackCopy(text, done);
+    }
+  }
+
+  function fallbackCopy(text, done) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(ta);
   }
 
   // ------------------------------------------------------------
@@ -426,6 +509,7 @@
           <span class="cat">${p.categoria || 'General'}</span>
           <h3>${p.nombre}</h3>
           <p>${p.descripcion || ''}</p>
+          ${adminMode ? `<div class="card-sku">SKU: ${p.id} <button type="button" class="copy-btn" onclick="copySkuFromCard('${p.id}', this)">Copiar</button></div>` : ''}
           <div class="card-footer">
             <span class="price">${formatPrice(p.precio)}</span>
             ${actions}
@@ -434,6 +518,10 @@
       </div>
     `;
   }
+
+  window.copySkuFromCard = function(id, btn) {
+    copyToClipboard(id, btn);
+  };
 
   // ------------------------------------------------------------
   // Eventos: tabs y modo administrador
@@ -466,7 +554,7 @@
   // ------------------------------------------------------------
   function openModal(product) {
     document.getElementById('modalTitle').textContent = product ? 'Editar producto' : 'Nuevo producto';
-    document.getElementById('f_id').value = product ? product.id : 'p' + Date.now();
+    document.getElementById('f_id').value = product ? product.id : generateSku(segment);
     document.getElementById('f_segment').value = product ? product.segment : segment;
     document.getElementById('f_categoria').value = product ? product.categoria : '';
     document.getElementById('f_nombre').value = product ? product.nombre : '';
@@ -489,6 +577,10 @@
   }
   imagenInput.addEventListener('input', updatePreview);
   imgPreview.addEventListener('error', () => { imgPreview.style.display = 'none'; });
+
+  document.getElementById('copySkuBtn').addEventListener('click', (e) => {
+    copyToClipboard(document.getElementById('f_id').value, e.currentTarget);
+  });
 
   document.getElementById('closeModal').addEventListener('click', () => {
     modalOverlay.style.display = 'none';
