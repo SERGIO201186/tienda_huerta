@@ -77,21 +77,21 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 ============================================================ */
 .hero{
   min-height:100svh;
-  background-color: #1a0a04; /* fallback si la imagen no carga */
+  background-color:#1a0a04;
   background-image:
-    linear-gradient(160deg, rgba(20,8,2,0.78) 0%, rgba(50,22,8,0.62) 45%, rgba(15,6,1,0.84) 100%),
-    url('https://images.unsplash.com/photo-1525385133512-2f3bdd039054?w=1600&q=85&auto=format&fit=crop&crop=center');
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+    linear-gradient(160deg, rgba(15,6,2,0.80) 0%, rgba(40,18,6,0.60) 50%, rgba(10,4,1,0.85) 100%),
+    url('https://images.unsplash.com/photo-1601479604588-68d9e6d386b5?w=1600&q=85&auto=format&fit=crop&crop=center');
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:100px 24px 60px;gap:28px;position:relative;overflow:hidden;
 }
 @media(max-width:768px){
   .hero{
     background-image:
-      linear-gradient(160deg, rgba(20,8,2,0.82) 0%, rgba(50,22,8,0.70) 45%, rgba(15,6,1,0.88) 100%),
-      url('https://images.unsplash.com/photo-1525385133512-2f3bdd039054?w=800&q=80&auto=format&fit=crop&crop=center');
+      linear-gradient(160deg, rgba(15,6,2,0.85) 0%, rgba(40,18,6,0.70) 50%, rgba(10,4,1,0.90) 100%),
+      url('https://images.unsplash.com/photo-1601479604588-68d9e6d386b5?w=800&q=80&auto=format&fit=crop&crop=center');
   }
 }
 .hero::before{
@@ -487,25 +487,25 @@ footer span{color:var(--dorado);}
 <nav class="navbar">
   <div class="navbar-brand">Funeraria Huerta</div>
   <div class="navbar-links">
-    <a href="#nosotros">Nosotros</a>
-    <a href="#servicios">Servicios</a>
-    <a href="#tienda">Tienda</a>
-    <a href="#ubicacion">Ubicación</a>
-    <a href="#dudas">Dudas</a>
-    <a href="#contacto">Contacto</a>
-    <a href="#tienda" class="navbar-cta">Ver Catálogo</a>
+    <a href="#nosotros" onclick="nav('nosotros')">Nosotros</a>
+    <a href="#servicios" onclick="nav('servicios')">Servicios</a>
+    <a href="#tienda" onclick="nav('tienda')">Tienda</a>
+    <a href="#ubicacion" onclick="nav('ubicacion')">Ubicación</a>
+    <a href="#dudas" onclick="nav('dudas')">Dudas</a>
+    <a href="#contacto" onclick="nav('contacto')">Contacto</a>
+    <button class="navbar-cta" onclick="nav('tienda')">Ver Catálogo</button>
   </div>
   <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-menu-close" id="mobileClose" aria-label="Cerrar">✕</button>
-  <a href="#nosotros" class="mm-link">Nosotros</a>
-  <a href="#servicios" class="mm-link">Servicios</a>
-  <a href="#tienda" class="mm-link">Tienda</a>
-  <a href="#ubicacion" class="mm-link">Ubicación</a>
-  <a href="#dudas" class="mm-link">Dudas</a>
-  <a href="#contacto" class="mm-link">Contacto</a>
+  <a href="#nosotros" class="mm-link" onclick="closeMob();nav('nosotros')">Nosotros</a>
+  <a href="#servicios" class="mm-link" onclick="closeMob();nav('servicios')">Servicios</a>
+  <a href="#tienda" class="mm-link" onclick="closeMob();nav('tienda')">Tienda</a>
+  <a href="#ubicacion" class="mm-link" onclick="closeMob();nav('ubicacion')">Ubicación</a>
+  <a href="#dudas" class="mm-link" onclick="closeMob();nav('dudas')">Dudas</a>
+  <a href="#contacto" class="mm-link" onclick="closeMob();nav('contacto')">Contacto</a>
 </div>
 
 <!-- ============================================================
@@ -519,8 +519,8 @@ footer span{color:var(--dorado);}
   <h1 class="hero-title">Servicios Funerarios<br><span>Huerta</span></h1>
   <p class="hero-sub">Acompañamiento digno y humano en los momentos más difíciles. Con más de años de experiencia en Xalapa, Veracruz.</p>
   <div class="hero-btns">
-    <a href="#tienda" class="btn-primary">Ver Catálogo de Servicios</a>
-    <a href="#contacto" class="btn-outline">Contáctanos</a>
+    <button class="btn-primary" onclick="document.getElementById('tienda').scrollIntoView({behavior:'smooth'})">Ver Catálogo de Servicios</button>
+    <button class="btn-outline" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Contáctanos</button>
   </div>
   <div class="hero-scroll">Descubre más</div>
 </section>
@@ -952,14 +952,20 @@ footer span{color:var(--dorado);}
 </div>
 
 <script>
-  /* ——————————————————————————————————————————
-     CONFIGURACIÓN
-  —————————————————————————————————————————— */
+  /* helpers de navegación */
+  function nav(id) {
+    const el = document.getElementById(id);
+    if (el) { setTimeout(() => el.scrollIntoView({behavior:'smooth', block:'start'}), 10); }
+    return false;
+  }
+  function closeMob() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
   const API_URL = 'https://script.google.com/macros/s/AKfycbzJtOwVJ5m2ziBGW2nkQy57x1nOo5ZLuyLtcISgwK1uaMMkoVKsHglDrSBbeJe-idr3Mw/exec';
   const ADMIN_PASSWORD = 'Danna.0203';
 
   /* —— LOGO: cambia este ID por el ID del archivo de tu logo en Google Drive —— */
-  const LOGO_DRIVE_ID = '1FLIgYT004Vj9QWnPrSHBYiYqUtRAnDOU';
+  const LOGO_DRIVE_ID = '';
   if (LOGO_DRIVE_ID) {
     const logoUrl = `https://lh3.googleusercontent.com/d/${LOGO_DRIVE_ID}`;
     document.getElementById('heroLogo').src = logoUrl;
