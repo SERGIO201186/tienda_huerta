@@ -476,7 +476,29 @@ footer span{color:var(--dorado);}
   .contact-fab{right:12px;bottom:12px;}
   .fab-btn{width:46px;height:46px;}
   .fab-btn svg{width:22px;height:22px;}
-}
+/* ============================================================
+   MISIÓN, VISIÓN Y VALORES
+============================================================ */
+.mvv{ background: var(--cafe); }
+.mvv .section-title{ color: var(--white); }
+.mvv .section-label{ color: var(--dorado); }
+.mvv-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:40px; }
+.mvv-card{ border-radius:20px; padding:32px 24px; display:flex; flex-direction:column; gap:14px; }
+.mvv-card.mision,.mvv-card.valores{ background:rgba(255,255,255,0.07); border:1px solid rgba(176,154,122,0.3); }
+.mvv-card.vision{ background:var(--dorado); }
+.mvv-icon{ font-size:36px; }
+.mvv-label{ font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--dorado); }
+.mvv-card.vision .mvv-label{ color:var(--cafe); }
+.mvv-title{ font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:600; color:var(--white); line-height:1.2; }
+.mvv-card.vision .mvv-title{ color:var(--cafe); }
+.mvv-text{ font-size:14px; color:rgba(255,255,255,0.82); line-height:1.75; }
+.mvv-card.vision .mvv-text{ color:rgba(61,31,15,0.85); }
+.valores-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:4px; }
+.valor-item{ display:flex; flex-direction:column; gap:4px; }
+.valor-name{ font-size:11px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--dorado); }
+.valor-desc{ font-size:12px; color:rgba(255,255,255,0.72); line-height:1.5; }
+@media(max-width:900px){ .mvv-grid{ grid-template-columns:1fr; } }
+@media(max-width:480px){ .valores-grid{ grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -487,7 +509,7 @@ footer span{color:var(--dorado);}
 <nav class="navbar">
   <div class="navbar-brand">Funeraria Huerta</div>
   <div class="navbar-links">
-    <a href="#nosotros" onclick="nav('nosotros')">Nosotros</a>
+    <a href="#nosotros" onclick="nav('mvv')">Nosotros</a>
     <a href="#servicios" onclick="nav('servicios')">Servicios</a>
     <a href="#tienda" onclick="nav('tienda')">Tienda</a>
     <a href="#ubicacion" onclick="nav('ubicacion')">Ubicación</a>
@@ -500,7 +522,7 @@ footer span{color:var(--dorado);}
 
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-menu-close" id="mobileClose" aria-label="Cerrar">✕</button>
-  <a href="#nosotros" class="mm-link" onclick="closeMob();nav('nosotros')">Nosotros</a>
+  <a href="#mvv" class="mm-link" onclick="closeMob();nav('mvv')">Nosotros</a>
   <a href="#servicios" class="mm-link" onclick="closeMob();nav('servicios')">Servicios</a>
   <a href="#tienda" class="mm-link" onclick="closeMob();nav('tienda')">Tienda</a>
   <a href="#ubicacion" class="mm-link" onclick="closeMob();nav('ubicacion')">Ubicación</a>
@@ -523,6 +545,69 @@ footer span{color:var(--dorado);}
     <button class="btn-outline" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Contáctanos</button>
   </div>
   <div class="hero-scroll">Descubre más</div>
+</section>
+
+<!-- ============================================================
+     MISIÓN, VISIÓN Y VALORES
+============================================================ -->
+<section class="mvv" id="mvv">
+  <div class="section-inner">
+    <div class="section-label">Quiénes somos</div>
+    <h2 class="section-title">Misión, Visión y Valores</h2>
+
+    <div class="mvv-grid">
+
+      <!-- MISIÓN -->
+      <div class="mvv-card mision">
+        <span class="mvv-icon">🕊️</span>
+        <div class="mvv-label">Misión</div>
+        <div class="mvv-title">Nuestro propósito</div>
+        <p class="mvv-text">Brindar un servicio de excelencia a nuestros clientes, acompañándolos en el momento de partir de sus seres amados, proporcionando un ambiente de calidez, otorgando un trato digno y justo.</p>
+      </div>
+
+      <!-- VISIÓN -->
+      <div class="mvv-card vision">
+        <span class="mvv-icon">🔭</span>
+        <div class="mvv-label">Visión</div>
+        <div class="mvv-title">Hacia dónde vamos</div>
+        <p class="mvv-text">Posicionarnos como una empresa exclusiva con el mejor servicio por su calidez y distinción, con el mejor trato y al mejor precio. Nuestra principal característica es el respeto por el ser humano y su memoria.</p>
+      </div>
+
+      <!-- VALORES -->
+      <div class="mvv-card valores">
+        <span class="mvv-icon">⭐</span>
+        <div class="mvv-label">Valores</div>
+        <div class="mvv-title">Lo que nos guía</div>
+        <div class="valores-grid">
+          <div class="valor-item">
+            <span class="valor-name">Honestidad</span>
+            <span class="valor-desc">Satisfacemos las necesidades de nuestros clientes con un servicio sincero, claro y realista.</span>
+          </div>
+          <div class="valor-item">
+            <span class="valor-name">Profesionalismo</span>
+            <span class="valor-desc">Desempeñamos nuestras labores con autenticidad, ejerciendo correcta y efectivamente nuestra labor.</span>
+          </div>
+          <div class="valor-item">
+            <span class="valor-name">Lealtad</span>
+            <span class="valor-desc">Demostramos una actitud de profundo respeto y compromiso.</span>
+          </div>
+          <div class="valor-item">
+            <span class="valor-name">Responsabilidad</span>
+            <span class="valor-desc">Tenemos presente el cumplimiento de nuestras obligaciones y cuidado en el trabajo que se lleva a cabo.</span>
+          </div>
+          <div class="valor-item">
+            <span class="valor-name">Compromiso</span>
+            <span class="valor-desc">Nos interesamos en el cliente y nos esforzamos en cumplir más allá de las necesidades y acuerdos del servicio.</span>
+          </div>
+          <div class="valor-item">
+            <span class="valor-name">Calidez</span>
+            <span class="valor-desc">Mostramos cordialidad y afecto humano, para ayudar a las familias en sus momentos más difíciles.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </section>
 
 <!-- ============================================================
