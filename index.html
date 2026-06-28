@@ -1124,7 +1124,7 @@ footer span{color:var(--dorado);}
       : `<button class="request-btn ${p.segment}" onclick="window.open('https://wa.me/522281845114?text=Hola, me interesa el servicio: ${encodeURIComponent(p.nombre)}','_blank')">Solicitar información</button>`;
     const imgUrl = toDirectImageUrl(p.imagen);
     const media = imgUrl
-      ? `<img class="card-img" src="${imgUrl}" alt="${p.nombre}" onerror="this.outerHTML='<div class=\\'card-img-placeholder\\'>🕊️</div>'" />`
+      ? `<img class="card-img" src="${imgUrl}" alt="${p.nombre}" style="cursor:zoom-in;" onclick="openLightbox('${imgUrl}','${p.nombre.replace(/'/g,"\\'")}');" onerror="this.outerHTML='<div class=\\'card-img-placeholder\\'>🕊️</div>'" />`
       : `<div class="card-img-placeholder">🕊️</div>`;
     return `
       <div class="card ${p.segment}">
@@ -1153,9 +1153,9 @@ footer span{color:var(--dorado);}
     document.body.style.overflow = 'hidden';
   };
   window.closeLightbox = function(event) {
-    if (event && event.target !== event.currentTarget && !event.target.classList.contains('lightbox-close')) return;
+    if (event && event.target !== event.currentTarget && event.target.id !== 'lightboxImg' && !event.target.classList.contains('lightbox-close')) return;
     document.getElementById('lightboxOverlay').classList.remove('open');
-    document.getElementById('lightboxImg').src = '';
+    setTimeout(() => { document.getElementById('lightboxImg').src = ''; }, 200);
     document.body.style.overflow = '';
   };
   document.addEventListener('keydown', e => { if (e.key === 'Escape') window.closeLightbox(); });
