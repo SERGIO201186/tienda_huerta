@@ -1,1622 +1,1271 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#0A0F1C" />
-<meta name="mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Panel Huerta" />
-<title>Panel de Control - Funeraria Huerta</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
-<script src="https://unpkg.com/react-is@18.3.1/umd/react-is.production.min.js"></script>
-<script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
-<script src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Servicios Funerarios Huerta — Xalapa, Veracruz</title>
 <style>
-  html,body{ margin:0; padding:0; background:#0A0F1C; overflow-x:hidden; max-width:100vw; }
-  #root{ overflow-x:hidden; }
-  ::selection{ background:#BB9056; color:#1A1306; }
-  input:focus, select:focus{ box-shadow:0 0 0 2px #BB905655; }
-  @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;700&display=swap');
+
+:root {
+  --cafe:       #3D1F0F;
+  --cafe-med:   #6B3A20;
+  --cafe-soft:  #F2EAE0;
+  --dorado:     #B09A7A;
+  --dorado-soft:#F7F1E8;
+  --bg:         #FAF7F2;
+  --text:       #2A1A0F;
+  --muted:      #7A6A5A;
+  --border:     #E0D5C5;
+  --white:      #FFFFFF;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);overflow-x:hidden;}
+button{cursor:pointer;font-family:inherit;}
+a{text-decoration:none;}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:2px solid var(--cafe);outline-offset:2px;
+}
+
+/* ============================================================
+   NAVBAR
+============================================================ */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(61,31,15,0.96);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 24px;gap:12px;
+}
+.navbar-brand{
+  font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;
+  color:var(--dorado);letter-spacing:0.5px;white-space:nowrap;
+}
+.navbar-links{display:flex;gap:6px;flex-wrap:wrap;}
+.navbar-links a{
+  color:rgba(255,255,255,0.85);font-size:13px;font-weight:500;
+  padding:6px 12px;border-radius:999px;transition:background 0.2s;
+}
+.navbar-links a:hover{background:rgba(255,255,255,0.12);}
+.navbar-cta{
+  background:var(--dorado);color:var(--cafe) !important;
+  font-weight:700 !important;border-radius:999px;padding:8px 16px !important;
+  white-space:nowrap;
+}
+.navbar-cta:hover{background:#C8AE8E !important;}
+.menu-toggle{
+  display:none;background:none;border:none;color:var(--white);font-size:22px;padding:4px;
+}
+.mobile-menu{
+  display:none;position:fixed;top:0;left:0;right:0;bottom:0;
+  background:var(--cafe);z-index:200;flex-direction:column;align-items:center;
+  justify-content:center;gap:28px;
+}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{
+  font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;
+  color:var(--white);padding:8px 20px;
+}
+.mobile-menu-close{
+  position:absolute;top:20px;right:24px;background:none;border:none;
+  color:var(--white);font-size:28px;
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero{
+  min-height:100svh;
+  background-color: #1a0a04; /* fallback si la imagen no carga */
+  background-image:
+    linear-gradient(160deg, rgba(20,8,2,0.78) 0%, rgba(50,22,8,0.62) 45%, rgba(15,6,1,0.84) 100%),
+    url('https://images.unsplash.com/photo-1525385133512-2f3bdd039054?w=1600&q=85&auto=format&fit=crop&crop=center');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:100px 24px 60px;gap:28px;position:relative;overflow:hidden;
+}
+@media(max-width:768px){
+  .hero{
+    background-image:
+      linear-gradient(160deg, rgba(20,8,2,0.82) 0%, rgba(50,22,8,0.70) 45%, rgba(15,6,1,0.88) 100%),
+      url('https://images.unsplash.com/photo-1525385133512-2f3bdd039054?w=800&q=80&auto=format&fit=crop&crop=center');
+  }
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 80%,rgba(176,154,122,0.15) 0%,transparent 70%);
+}
+.hero-logo{width:min(220px,55vw);filter:drop-shadow(0 8px 32px rgba(0,0,0,0.4));}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;color:var(--white);
+  font-size:clamp(28px,6vw,52px);font-weight:600;line-height:1.15;letter-spacing:1px;
+}
+.hero-title span{color:var(--dorado);}
+.hero-sub{
+  color:rgba(255,255,255,0.72);font-size:clamp(14px,3vw,18px);
+  max-width:480px;line-height:1.6;
+}
+.hero-divider{
+  width:60px;height:2px;background:var(--dorado);border-radius:2px;
+}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+.btn-primary{
+  background:var(--dorado);color:var(--cafe);font-weight:700;font-size:15px;
+  padding:14px 28px;border-radius:999px;border:none;display:inline-block;
+  box-shadow:0 4px 16px rgba(0,0,0,0.25);transition:transform 0.2s,background 0.2s;
+}
+.btn-primary:hover{background:#C8AE8E;transform:translateY(-2px);}
+.btn-outline{
+  background:transparent;color:var(--white);font-weight:600;font-size:15px;
+  padding:13px 28px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.4);
+  display:inline-block;transition:border-color 0.2s,background 0.2s;
+}
+.btn-outline:hover{border-color:var(--white);background:rgba(255,255,255,0.08);}
+.hero-scroll{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  color:rgba(255,255,255,0.4);font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.hero-scroll::after{
+  content:'';display:block;width:1px;height:32px;background:rgba(255,255,255,0.25);
+}
+
+/* ============================================================
+   SECCIONES GENERALES
+============================================================ */
+section{padding:72px 24px;}
+.section-inner{max-width:960px;margin:0 auto;}
+.section-label{
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--dorado);margin-bottom:10px;
+}
+.section-title{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,40px);
+  font-weight:600;line-height:1.2;color:var(--cafe);margin-bottom:16px;
+}
+.section-desc{font-size:16px;color:var(--muted);line-height:1.7;max-width:560px;}
+
+/* ============================================================
+   NOSOTROS (about)
+============================================================ */
+.about{background:var(--white);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:40px;}
+.about-img-box{
+  border-radius:20px;overflow:hidden;aspect-ratio:4/3;
+  background:linear-gradient(135deg,var(--cafe) 0%,var(--cafe-med) 100%);
+  display:flex;align-items:center;justify-content:center;
+}
+.about-logo-small{width:60%;opacity:0.85;filter:brightness(10);}
+.about-values{display:flex;flex-direction:column;gap:20px;margin-top:24px;}
+.value-item{display:flex;gap:14px;align-items:flex-start;}
+.value-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
+.value-title{font-weight:700;font-size:15px;color:var(--cafe);margin-bottom:3px;}
+.value-desc{font-size:14px;color:var(--muted);line-height:1.6;}
+
+/* ============================================================
+   TIENDA (catalog)
+============================================================ */
+.store{background:var(--dorado-soft);}
+.store-hero{
+  background:linear-gradient(135deg,var(--cafe) 0%,var(--cafe-med) 100%);
+  border-radius:20px;padding:40px 32px;text-align:center;margin-bottom:40px;
+  position:relative;overflow:hidden;
+}
+.store-hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 70% 50%,rgba(176,154,122,0.2) 0%,transparent 70%);
+}
+.store-hero-label{
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--dorado);margin-bottom:10px;
+}
+.store-hero-title{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,36px);
+  font-weight:600;color:var(--white);margin-bottom:10px;
+}
+.store-hero-sub{color:rgba(255,255,255,0.75);font-size:15px;max-width:460px;margin:0 auto 24px;}
+
+.admin-toggle{
+  display:none;align-items:center;gap:6px;padding:8px 14px;
+  border-radius:999px;border:1px solid var(--border);background:var(--white);
+  color:var(--text);font-size:13px;font-weight:500;position:absolute;top:16px;right:16px;
+}
+.admin-toggle.active{background:var(--cafe);color:var(--white);border-color:var(--cafe);}
+
+.tabs{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;}
+.tab{
+  flex:1;min-width:140px;display:flex;align-items:center;gap:10px;padding:14px 16px;
+  border-radius:14px;border:1px solid var(--border);background:var(--white);
+  transition:all 0.25s ease;text-align:left;
+}
+.tab.active.futuro{border:1.5px solid var(--cafe);background:var(--cafe-soft);}
+.tab.active.inmediato{border:1.5px solid var(--dorado);background:var(--dorado-soft);}
+.tab.active.otros{border:1.5px solid var(--cafe-med);background:#F5EDE4;}
+.tab-icon{font-size:20px;flex-shrink:0;}
+.tab-title{font-weight:700;font-size:14px;color:var(--text);}
+.tab-sub{font-size:12px;color:var(--muted);}
+
+.add-btn{
+  display:none;align-items:center;gap:8px;margin-bottom:18px;padding:10px 16px;
+  border-radius:10px;border:none;color:var(--white);font-size:14px;font-weight:500;
+}
+.add-btn.futuro{background:var(--cafe);}
+.add-btn.inmediato{background:var(--dorado);color:var(--cafe);}
+.add-btn.otros{background:var(--cafe-med);}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;}
+.card-img{width:100%;height:160px;object-fit:cover;display:block;}
+.card-img-placeholder{width:100%;height:160px;display:flex;align-items:center;justify-content:center;background:var(--cafe-soft);font-size:36px;}
+.card-body{padding:18px;display:flex;flex-direction:column;gap:8px;flex:1;}
+.card .cat{font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;}
+.card.futuro .cat{color:var(--cafe);}
+.card.inmediato .cat{color:var(--cafe-med);}
+.card.otros .cat{color:var(--cafe-med);}
+.card h3{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;margin:0;color:var(--cafe);}
+.card p{font-size:13px;color:var(--muted);margin:0;line-height:1.5;flex:1;}
+.card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px;}
+.price{font-size:19px;font-weight:700;color:var(--cafe);}
+.card-sku{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);font-family:monospace;}
+.copy-btn{
+  padding:3px 8px;font-size:11px;border-radius:6px;border:1px solid var(--border);
+  background:var(--white);color:var(--text);font-family:'DM Sans',sans-serif;cursor:pointer;
+}
+.copy-btn.copied,.copy-btn.copied:hover{background:var(--cafe);color:var(--white);border-color:var(--cafe);}
+
+.request-btn{border:none;color:var(--white);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;}
+.request-btn.futuro,.request-btn.otros{background:var(--cafe);}
+.request-btn.inmediato{background:var(--cafe-med);}
+.icon-btn{border:1px solid var(--border);background:var(--white);border-radius:8px;padding:7px;font-size:14px;}
+.icon-btn.danger{color:#B84F4F;}
+.empty,.loading{text-align:center;padding:60px 20px;color:var(--muted);}
+
+/* ============================================================
+   SERVICIOS highlight cards
+============================================================ */
+.services{background:var(--white);}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;margin-top:40px;}
+.service-card{
+  border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:12px;
+  border:1px solid var(--border);transition:transform 0.2s,box-shadow 0.2s;
+}
+.service-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(61,31,15,0.1);}
+.service-card.dark{background:var(--cafe);border-color:var(--cafe);}
+.service-card.dark .s-title{color:var(--white);}
+.service-card.dark .s-desc{color:rgba(255,255,255,0.7);}
+.service-card.light{background:var(--dorado-soft);}
+.service-card.plain{background:var(--bg);}
+.s-icon{font-size:32px;}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--cafe);}
+.s-desc{font-size:14px;color:var(--muted);line-height:1.6;}
+
+/* ============================================================
+   CONTACTO
+============================================================ */
+.contact{background:linear-gradient(135deg,var(--cafe) 0%,var(--cafe-med) 100%);color:var(--white);}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:40px;}
+.contact .section-title{color:var(--white);}
+.contact .section-desc{color:rgba(255,255,255,0.75);}
+.contact-items{display:flex;flex-direction:column;gap:20px;margin-top:8px;}
+.contact-item{display:flex;gap:14px;align-items:flex-start;}
+.contact-icon{
+  width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.12);
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;
+}
+.contact-item-label{font-size:12px;color:rgba(255,255,255,0.55);margin-bottom:3px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
+.contact-item-val{font-size:15px;color:var(--white);font-weight:500;}
+.contact-item-val a{color:var(--white);}
+.social-btns{display:flex;flex-direction:column;gap:12px;margin-top:8px;}
+.social-btn{
+  display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:14px;
+  font-size:15px;font-weight:700;color:var(--white);transition:transform 0.2s,opacity 0.2s;
+}
+.social-btn:hover{transform:translateY(-2px);opacity:0.92;}
+.social-btn.wa{background:#25D366;}
+.social-btn.fb{background:#1877F2;}
+.social-btn svg{width:22px;height:22px;flex-shrink:0;}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer{
+  background:#1a0a04;color:rgba(255,255,255,0.55);
+  text-align:center;padding:24px;font-size:13px;
+}
+footer span{color:var(--dorado);}
+
+/* ============================================================
+   FABs flotantes
+============================================================ */
+.contact-fab{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:10px;z-index:50;}
+.fab-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:52px;height:52px;border-radius:50%;color:var(--white);
+  box-shadow:0 4px 14px rgba(0,0,0,0.25);transition:transform 0.2s;
+}
+.fab-btn:hover{transform:scale(1.08);}
+.fab-btn svg{width:26px;height:26px;}
+.fab-btn.whatsapp{background:#25D366;}
+.fab-btn.facebook{background:#1877F2;}
+
+/* ============================================================
+   MODAL
+============================================================ */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(45,42,38,0.45);
+  display:flex;align-items:center;justify-content:center;padding:16px;z-index:150;
+}
+.modal{
+  background:var(--white);border-radius:16px;padding:24px;width:100%;max-width:420px;
+  display:flex;flex-direction:column;gap:12px;max-height:90vh;overflow-y:auto;
+}
+.modal h2{font-family:'Cormorant Garamond',serif;font-size:22px;margin:0;color:var(--cafe);}
+.modal-header{display:flex;justify-content:space-between;align-items:center;}
+.modal label{font-size:12px;font-weight:600;color:var(--muted);}
+.modal .hint{font-size:11px;color:var(--muted);font-weight:400;display:block;margin-top:4px;}
+.modal input,.modal select,.modal textarea{
+  width:100%;margin-top:4px;padding:10px 12px;border-radius:8px;
+  border:1px solid var(--border);font-size:14px;font-family:inherit;
+}
+.modal textarea{resize:vertical;}
+.preview-img{width:100%;height:120px;object-fit:cover;border-radius:8px;margin-top:8px;border:1px solid var(--border);display:none;}
+.sku-field{display:flex;gap:6px;margin-top:4px;}
+.sku-field input{margin-top:0;flex:1;background:var(--bg);color:var(--text);font-weight:600;letter-spacing:0.5px;}
+.copy-btn-lg{padding:10px 14px;border-radius:8px;border:1px solid var(--border);background:var(--white);font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;}
+.save-btn{
+  margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px;border-radius:10px;border:none;background:var(--cafe);color:var(--white);
+  font-size:14px;font-weight:600;
+}
+.close-btn{border:none;background:none;padding:4px;font-size:20px;color:var(--muted);}
+.banner{background:var(--dorado-soft);color:#7A4E0F;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;}
+
+/* ============================================================
+   MAPA Y PAGOS — fondo crema cálido
+============================================================ */
+.location-payments{ background:var(--cafe-soft); }
+.lp-grid{ display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-top:40px; align-items:start; }
+.map-box{
+  border-radius:18px; overflow:hidden; box-shadow:0 8px 32px rgba(61,31,15,0.15);
+  border:3px solid var(--dorado);
+}
+.map-box iframe{ width:100%; height:320px; display:block; border:none; }
+
+.pay-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.pay-card{
+  background:var(--white); border-radius:14px; padding:18px 16px;
+  display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center;
+  border:1.5px solid var(--border); transition:transform 0.2s, box-shadow 0.2s;
+}
+.pay-card:hover{ transform:translateY(-3px); box-shadow:0 8px 20px rgba(61,31,15,0.1); }
+.pay-icon{ font-size:30px; }
+.pay-name{ font-weight:700; font-size:14px; color:var(--cafe); }
+.pay-desc{ font-size:12px; color:var(--muted); line-height:1.4; }
+
+/* ============================================================
+   FAQ — fondo café oscuro (máximo contraste)
+============================================================ */
+.faq{ background:var(--cafe); }
+.faq .section-label{ color:var(--dorado); }
+.faq .section-title{ color:var(--white); }
+.faq-list{ display:flex; flex-direction:column; gap:2px; margin-top:36px; }
+.faq-item{
+  border-radius:12px; overflow:hidden; background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+}
+.faq-q{
+  width:100%; display:flex; justify-content:space-between; align-items:center;
+  padding:18px 20px; background:none; border:none; color:var(--white);
+  font-size:15px; font-weight:600; text-align:left; gap:12px; cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+}
+.faq-q:hover{ background:rgba(255,255,255,0.05); }
+.faq-icon{ font-size:20px; flex-shrink:0; color:var(--dorado); transition:transform 0.3s; }
+.faq-item.open .faq-icon{ transform:rotate(45deg); }
+.faq-a{
+  display:none; padding:0 20px 18px; color:rgba(255,255,255,0.75);
+  font-size:14px; line-height:1.7; border-top:1px solid rgba(255,255,255,0.08);
+}
+.faq-item.open .faq-a{ display:block; }
+.faq-cta{
+  margin-top:32px; text-align:center;
+  background:rgba(255,255,255,0.07); border-radius:16px;
+  padding:28px 24px; border:1px solid rgba(255,255,255,0.12);
+}
+.faq-cta p{ color:rgba(255,255,255,0.75); margin-bottom:16px; font-size:15px; }
+
+/* ============================================================
+   CONTACTO — fondo degradado café (ya existente, mejorado)
+============================================================ */
+.contact{ background:linear-gradient(135deg,var(--cafe) 0%,var(--cafe-med) 100%); color:var(--white); }
+.contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; margin-top:40px; }
+.contact .section-title{ color:var(--white); }
+.contact .section-desc{ color:rgba(255,255,255,0.75); }
+.contact-items{ display:flex; flex-direction:column; gap:20px; margin-top:8px; }
+.contact-item{ display:flex; gap:14px; align-items:flex-start; }
+.contact-icon{
+  width:44px; height:44px; border-radius:12px; background:rgba(255,255,255,0.14);
+  display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;
+}
+.contact-item-label{ font-size:11px; color:rgba(255,255,255,0.5); margin-bottom:4px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; }
+.contact-item-val{ font-size:15px; color:var(--white); font-weight:500; line-height:1.5; }
+.contact-item-val a{ color:var(--white); }
+.social-btns{ display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+.social-btn{
+  display:flex; align-items:center; gap:12px; padding:14px 18px;
+  border-radius:14px; font-size:15px; font-weight:700; color:var(--white);
+  transition:transform 0.2s,opacity 0.2s;
+}
+.social-btn:hover{ transform:translateY(-2px); opacity:0.9; }
+.social-btn.wa{ background:#25D366; }
+.social-btn.fb{ background:#1877F2; }
+.social-btn svg{ width:22px; height:22px; flex-shrink:0; }
+
+/* form de contacto */
+.contact-form{ display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+.contact-form input,
+.contact-form textarea,
+.contact-form select{
+  width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.08); color:var(--white); font-size:14px;
+  font-family:'DM Sans',sans-serif;
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder{ color:rgba(255,255,255,0.45); }
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus{ border-color:var(--dorado); outline:none; background:rgba(255,255,255,0.12); }
+.contact-form select option{ background:var(--cafe); color:var(--white); }
+.contact-form textarea{ resize:vertical; min-height:100px; }
+.send-btn{
+  padding:14px; border:none; border-radius:10px; background:var(--dorado);
+  color:var(--cafe); font-weight:700; font-size:15px; cursor:pointer;
+  transition:background 0.2s, transform 0.2s;
+}
+.send-btn:hover{ background:#C8AE8E; transform:translateY(-1px); }
+.form-success{
+  background:rgba(37,211,102,0.18); border:1px solid rgba(37,211,102,0.4);
+  border-radius:10px; padding:14px; color:#7FFFA8; font-size:14px;
+  text-align:center; display:none;
+}
+
+/* ============================================================
+   LIGHTBOX
+============================================================ */
+.lightbox-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:9999;
+  align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:20px;
+  cursor:zoom-out;
+}
+.lightbox-overlay.open{display:flex;}
+.lightbox-overlay img{
+  max-width:min(94vw,820px);max-height:82vh;object-fit:contain;
+  border-radius:10px;box-shadow:0 12px 56px rgba(0,0,0,0.8);cursor:default;
+}
+.lightbox-caption{
+  color:rgba(255,255,255,0.85);font-size:15px;text-align:center;
+  font-family:'Cormorant Garamond',serif;letter-spacing:0.3px;max-width:600px;
+}
+.lightbox-close{
+  position:fixed;top:16px;right:20px;background:rgba(255,255,255,0.15);border:none;
+  color:#fff;font-size:26px;width:42px;height:42px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.lightbox-close:hover{background:rgba(255,255,255,0.28);}
+
+/* ============================================================
+   RESPONSIVE nuevas secciones
+============================================================ */
+@media(max-width:768px){
+  .navbar-links{display:none;}
+  .menu-toggle{display:block;}
+  .about-grid,.contact-grid,.lp-grid{grid-template-columns:1fr;}
+  .about-img-box{aspect-ratio:16/7;}
+  .tabs{flex-direction:column;}
+  .grid{grid-template-columns:1fr;}
+  .services-grid{grid-template-columns:1fr;}
+  .store-hero{padding:28px 20px;}
+  .pay-grid{grid-template-columns:1fr 1fr;}
+  .map-box iframe{height:260px;}
+}
+@media(max-width:420px){
+  section{padding:52px 16px;}
+  .hero{padding:80px 16px 52px;}
+  .hero-btns{flex-direction:column;align-items:stretch;}
+  .btn-primary,.btn-outline{text-align:center;}
+  .card-img,.card-img-placeholder{height:130px;}
+  .contact-fab{right:12px;bottom:12px;}
+  .fab-btn{width:46px;height:46px;}
+  .fab-btn svg{width:22px;height:22px;}
+}
 </style>
-<script>
-  window.addEventListener('error', function (e) {
-    var root = document.getElementById('root');
-    if (root) {
-      root.innerHTML = '<div style="background:#1a0a0a;color:#ffb3a0;padding:20px;font-family:monospace;font-size:13px;white-space:pre-wrap;min-height:100vh;box-sizing:border-box;">'
-        + '⚠ ERROR AL CARGAR EL PANEL\n\n'
-        + 'Mensaje: ' + (e.message || 'desconocido') + '\n'
-        + 'Archivo: ' + (e.filename || '-') + '\n'
-        + 'Línea: ' + (e.lineno || '-') + '\n\n'
-        + 'Copia este texto completo y envíalo para corregirlo.'
-        + '</div>';
-    }
-  });
-</script>
 </head>
 <body>
-<div id="root" style="background:#0A0F1C;color:#8B93AC;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:sans-serif;font-size:14px;">Cargando panel…</div>
 
-<script type="text/babel" data-presets="react">
-const { useState, useEffect, useMemo } = React;
-const {
-  ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-} = Recharts;
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav class="navbar">
+  <div class="navbar-brand">Funeraria Huerta</div>
+  <div class="navbar-links">
+    <a href="#nosotros">Nosotros</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#tienda">Tienda</a>
+    <a href="#ubicacion">Ubicación</a>
+    <a href="#dudas">Dudas</a>
+    <a href="#contacto">Contacto</a>
+    <a href="#tienda" class="navbar-cta">Ver Catálogo</a>
+  </div>
+  <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+</nav>
 
-/* ============ ICONOS (SVG propios, sin dependencias externas) ============ */
-function mkIcon(children) {
-  return function IconCmp({ size = 16, style, className }) {
-    return (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style} className={className}>
-        {children}
-      </svg>
-    );
-  };
-}
-const LayoutDashboard = mkIcon(<><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></>);
-const Wallet = mkIcon(<><path d="M21 7H5a2 2 0 00-2 2v8a2 2 0 002 2h16v-6"/><path d="M3 9V6a2 2 0 012-2h13a2 2 0 012 2v3"/><circle cx="18" cy="14" r="1"/></>);
-const Users = mkIcon(<><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></>);
-const Receipt = mkIcon(<><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/></>);
-const Truck = mkIcon(<><rect x="1" y="7" width="14" height="10" rx="1"/><path d="M15 10h4l3 3v4h-7"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></>);
-const FileSignature = mkIcon(<><path d="M6 3h9l4 4v14H6z"/><path d="M10 16l6-6 2 2-6 6h-2v-2z"/></>);
-const ShoppingCart = mkIcon(<><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></>);
-const Link2 = mkIcon(<><path d="M9 17H7a5 5 0 010-10h2"/><path d="M15 7h2a5 5 0 010 10h-2"/><line x1="8" y1="12" x2="16" y2="12"/></>);
-const Plus = mkIcon(<><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></>);
-const Trash2 = mkIcon(<><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></>);
-const RefreshCw = mkIcon(<><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></>);
-const CheckCircle2 = mkIcon(<><circle cx="12" cy="12" r="9"/><polyline points="8 12 11 15 16 9"/></>);
-const AlertCircle = mkIcon(<><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16" x2="12" y2="16.01"/></>);
-const TrendingUp = mkIcon(<><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></>);
-const TrendingDown = mkIcon(<><polyline points="3 7 9 13 13 9 21 17"/><polyline points="14 17 21 17 21 10"/></>);
-const Menu = mkIcon(<><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></>);
-const X = mkIcon(<><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>);
-const Flame = mkIcon(<><path d="M12 22a6 6 0 006-6c0-3-2-5-3-7-1 1.5-2 2.5-2 4a3 3 0 01-3-3c0-1.5.7-2.7 1.5-4C9 7.5 6 10.5 6 14a6 6 0 006 6z"/></>);
-const Wrench = mkIcon(<><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94z"/></>);
-const Fuel = mkIcon(<><line x1="3" y1="22" x2="15" y2="22"/><line x1="4" y1="9" x2="14" y2="9"/><path d="M14 22V4a2 2 0 00-2-2H6a2 2 0 00-2 2v18"/><path d="M14 13h2a2 2 0 012 2v2a2 2 0 002 2"/><circle cx="18" cy="9" r="1.5"/></>);
-const ShieldCheck = mkIcon(<><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></>);
-const Package = mkIcon(<><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></>);
-const Building = mkIcon(<><rect x="4" y="2" width="16" height="20" rx="1"/><line x1="9" y1="7" x2="9" y2="7"/><line x1="15" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="9" y2="11"/><line x1="15" y1="11" x2="15" y2="11"/><line x1="9" y1="15" x2="9" y2="15"/><line x1="15" y1="15" x2="15" y2="15"/><path d="M9 22v-4h6v4"/></>);
-const Contact2 = mkIcon(<><circle cx="12" cy="8" r="3"/><path d="M5 21v-1a7 7 0 0114 0v1"/><line x1="2" y1="9" x2="2" y2="13"/><line x1="22" y1="9" x2="22" y2="13"/></>);
-const Gauge = mkIcon(<><path d="M12 3a9 9 0 100 18 9 9 0 000-18z"/><path d="M12 12l4-4"/><path d="M12 8v0"/></>);
-const Edit3 = mkIcon(<><path d="M17 3a2.85 2.85 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></>);
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" id="mobileClose" aria-label="Cerrar">✕</button>
+  <a href="#nosotros" class="mm-link">Nosotros</a>
+  <a href="#servicios" class="mm-link">Servicios</a>
+  <a href="#tienda" class="mm-link">Tienda</a>
+  <a href="#ubicacion" class="mm-link">Ubicación</a>
+  <a href="#dudas" class="mm-link">Dudas</a>
+  <a href="#contacto" class="mm-link">Contacto</a>
+</div>
 
-/* ============ TEMA ============ */
-const T = {
-  bg: "#0A0F1C", surface: "#121B2E", surfaceAlt: "#182438",
-  border: "#26324A", borderLight: "#33415C",
-  bronze: "#BB9056", bronzeLight: "#E0C492",
-  text: "#EDEAE2", textMuted: "#8B93AC",
-  danger: "#C2542D", dangerSoft: "#3A2620",
-  success: "#6E9C82", successSoft: "#1E2E27", info: "#6E89A8",
-};
-const PIE_COLORS = ["#BB9056", "#6E89A8", "#6E9C82", "#C2542D", "#8B6F47", "#3F5570"];
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="hero" id="inicio">
+  <img class="hero-logo" src="https://raw.githubusercontent.com/placeholder/placeholder/main/logo.png"
+       id="heroLogo" alt="Logo Servicios Funerarios Huerta"
+       onerror="this.style.display='none'" />
+  <div class="hero-divider"></div>
+  <h1 class="hero-title">Servicios Funerarios<br><span>Huerta</span></h1>
+  <p class="hero-sub">Acompañamiento digno y humano en los momentos más difíciles. Con más de 7 años de experiencia en Xalapa, Veracruz.</p>
+  <div class="hero-btns">
+    <a href="#tienda" class="btn-primary">Ver Catálogo de Servicios</a>
+    <a href="#contacto" class="btn-outline">Contáctanos</a>
+  </div>
+  <div class="hero-scroll">Descubre más</div>
+</section>
 
-const fmtMoney = (n) => new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(n || 0);
-const fmtDate = (d) => { if (!d) return "—"; try { return new Date(d).toLocaleDateString("es-MX", { day: "2-digit", month: "short", year: "numeric" }); } catch { return d; } };
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-
-/* ============ DATOS SEMILLA ============ */
-const SEED_EMPLEADOS = [];
-const SEED_GASTOS = [];
-const SEED_VEHICULOS = [];
-const SEED_VENTAS_MES = [
-  { mes: "Ene", inmediato: 142000, prevision: 38000, gastos: 96000 },
-  { mes: "Feb", inmediato: 128000, prevision: 41000, gastos: 89000 },
-  { mes: "Mar", inmediato: 156000, prevision: 45000, gastos: 102000 },
-  { mes: "Abr", inmediato: 133000, prevision: 39500, gastos: 94000 },
-  { mes: "May", inmediato: 171000, prevision: 52000, gastos: 110000 },
-  { mes: "Jun", inmediato: 149000, prevision: 47500, gastos: 99500 },
-];
-const SEED_ODS = [
-  { folio: "ODS-0412", finado: "J. Ramírez Cobos", contratante: "M. Ramírez", total: 38500, anticipo: 38500, restante: 0, estatus: "LIQUIDADO" },
-  { folio: "ODS-0413", finado: "L. Domínguez Paz", contratante: "R. Domínguez", total: 27800, anticipo: 15000, restante: 12800, estatus: "PENDIENTE" },
-  { folio: "ODS-0414", finado: "A. Cortez Luna", contratante: "S. Cortez", total: 45200, anticipo: 45200, restante: 0, estatus: "LIQUIDADO" },
-];
-const SEED_PREVISION = [
-  { folio: "SFH-26-00088", titular: "Eduardo Salas", asesor: "Itzel Romero", total: 18000, abonado: 7200, estatus: "VIGENTE" },
-  { folio: "SFH-26-00091", titular: "Carmen Ibarra", asesor: "Itzel Romero", total: 22000, abonado: 22000, estatus: "LIQUIDADO" },
-  { folio: "SFH-26-00095", titular: "Felipe Noriega", asesor: "Itzel Romero", total: 18000, abonado: 3000, estatus: "CON ATRASO" },
-];
-
-/* ============ STORAGE (Google Sheet en la nube, con respaldo local) ============ */
-function getCloudUrl() {
-  try { return localStorage.getItem("huerta:cloud-url") || ""; } catch { return ""; }
-}
-function setCloudUrlLocal(url) {
-  try { localStorage.setItem("huerta:cloud-url", url); } catch {}
-}
-function loadLocal(key, fallback) {
-  try {
-    const raw = localStorage.getItem("huerta:" + key);
-    if (!raw) return fallback;
-    return JSON.parse(raw);
-  } catch { return fallback; }
-}
-function saveLocal(key, value) {
-  try { localStorage.setItem("huerta:" + key, JSON.stringify(value)); } catch {}
-}
-async function cloudGet(key, url) {
-  const cloudUrl = url || getCloudUrl();
-  if (!cloudUrl) return undefined;
-  try {
-    const sep = cloudUrl.includes("?") ? "&" : "?";
-    const res = await fetch(cloudUrl + sep + "key=" + encodeURIComponent(key));
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const data = await res.json();
-    return data === null ? undefined : data;
-  } catch { return undefined; }
-}
-async function cloudSet(key, value) {
-  const cloudUrl = getCloudUrl();
-  if (!cloudUrl) return false;
-  try {
-    await fetch(cloudUrl, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ key, value }),
-    });
-    return true;
-  } catch { return false; }
-}
-async function loadKey(key, fallback) {
-  const cloud = await cloudGet(key);
-  if (cloud !== undefined) { saveLocal(key, cloud); return cloud; }
-  return loadLocal(key, fallback);
-}
-function saveKey(key, value) {
-  saveLocal(key, value);
-  cloudSet(key, value);
-}
-
-/* ============ PRIMITIVOS UI ============ */
-function Eyebrow({ children }) {
-  return (
-    <div className="flex items-center gap-3 mb-1">
-      <span style={{ color: T.bronze, fontFamily: "'Fraunces', serif" }} className="text-xs tracking-[0.25em] uppercase">{children}</span>
-      <span style={{ background: T.border, height: 1 }} className="flex-1" />
-    </div>
-  );
-}
-function SectionTitle({ title, subtitle }) {
-  return (
-    <div className="mb-5">
-      <Eyebrow>{subtitle}</Eyebrow>
-      <h2 style={{ fontFamily: "'Fraunces', serif", color: T.text }} className="text-xl md:text-2xl font-medium break-words">{title}</h2>
-    </div>
-  );
-}
-function KpiCard({ label, value, delta, deltaGood, icon: Icon }) {
-  return (
-    <div style={{ background: T.surface, border: `1px solid ${T.border}` }} className="rounded-lg p-4 flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <span style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider">{label}</span>
-        {Icon && <Icon size={16} style={{ color: T.bronze }} />}
+<!-- ============================================================
+     NOSOTROS
+============================================================ -->
+<section class="about" id="nosotros">
+  <div class="section-inner">
+    <div class="section-label">Quiénes somos</div>
+    <h2 class="section-title">Tradición y respeto en cada servicio</h2>
+    <p class="section-desc">En Servicios Funerarios Huerta brindamos acompañamiento personalizado, con calidez y profesionalismo, en cada etapa del proceso.</p>
+    <div class="about-grid">
+      <div class="about-img-box">
+        <img class="about-logo-small" src="" id="aboutLogo" alt="Huerta" onerror="this.style.display='none'" />
       </div>
-      <span style={{ fontFamily: "'Fraunces', serif", color: T.text }} className="text-lg md:text-2xl font-medium break-words">{value}</span>
-      {delta && (
-        <span className="text-xs flex items-center gap-1" style={{ color: deltaGood ? T.success : T.danger }}>
-          {deltaGood ? <TrendingUp size={12} /> : <TrendingDown size={12} />}{delta}
-        </span>
-      )}
+      <div>
+        <div class="about-values">
+          <div class="value-item">
+            <span class="value-icon">🕊️</span>
+            <div>
+              <div class="value-title">Dignidad</div>
+              <div class="value-desc">Cada servicio se realiza con el máximo respeto hacia el difunto y su familia.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <span class="value-icon">🤝</span>
+            <div>
+              <div class="value-title">Acompañamiento</div>
+              <div class="value-desc">Estamos disponibles 24/7 para guiarle en cada trámite y decisión.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <span class="value-icon">💼</span>
+            <div>
+              <div class="value-title">Experiencia</div>
+              <div class="value-desc">Años de trayectoria en la región de Xalapa nos avalan como una funeraria de confianza.</div>
+            </div>
+          </div>
+          <div class="value-item">
+            <span class="value-icon">📋</span>
+            <div>
+              <div class="value-title">Previsión a futuro</div>
+              <div class="value-desc">Planes flexibles para planear con anticipación y proteger a tu familia de imprevistos.</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  );
-}
-function Card({ children, style }) {
-  return <div style={{ background: T.surface, border: `1px solid ${T.border}`, ...style }} className="rounded-lg p-4">{children}</div>;
-}
-function Btn({ children, onClick, variant = "primary", icon: Icon, type = "button", disabled }) {
-  const styles = {
-    primary: { background: T.bronze, color: "#1A1306", border: `1px solid ${T.bronze}` },
-    ghost: { background: "transparent", color: T.text, border: `1px solid ${T.border}` },
-    danger: { background: "transparent", color: T.danger, border: `1px solid ${T.danger}` },
-  };
-  return (
-    <button type={type} onClick={onClick} disabled={disabled} style={{ ...styles[variant], opacity: disabled ? 0.5 : 1 }}
-      className="px-3 py-2 rounded-md text-sm font-medium flex items-center justify-center gap-2 transition-opacity hover:opacity-80 whitespace-nowrap w-full md:w-auto">
-      {Icon && <Icon size={14} />} {children}
-    </button>
-  );
-}
-function Input({ label, ...props }) {
-  return (
-    <label className="flex flex-col gap-1 text-sm" style={{ color: T.textMuted }}>
-      {label}
-      <input {...props} style={{ background: T.surfaceAlt, border: `1px solid ${T.border}`, color: T.text }} className="rounded-md px-3 py-2 outline-none" />
-    </label>
-  );
-}
-function Select({ label, children, ...props }) {
-  return (
-    <label className="flex flex-col gap-1 text-sm" style={{ color: T.textMuted }}>
-      {label}
-      <select {...props} style={{ background: T.surfaceAlt, border: `1px solid ${T.border}`, color: T.text }} className="rounded-md px-3 py-2 outline-none">
-        {children}
+  </div>
+</section>
+
+<!-- ============================================================
+     SERVICIOS HIGHLIGHT
+============================================================ -->
+<section class="services" id="servicios">
+  <div class="section-inner">
+    <div class="section-label">Lo que ofrecemos</div>
+    <h2 class="section-title">Nuestros servicios principales</h2>
+    <div class="services-grid">
+      <div class="service-card dark">
+        <span class="s-icon">🌱</span>
+        <div class="s-title">Planes a Futuro</div>
+        <div class="s-desc">Planifica con anticipación y evita cargas económicas a tu familia. Planes accesibles y personalizables.</div>
+      </div>
+      <div class="service-card light">
+        <span class="s-icon">🕯️</span>
+        <div class="s-title">Servicio Inmediato</div>
+        <div class="s-desc">Atención de urgencia las 24 horas del día, los 365 días del año. Estamos cuando más nos necesitas.</div>
+      </div>
+      <div class="service-card plain">
+        <span class="s-icon">🌸</span>
+        <div class="s-title">Arreglos florales</div>
+        <div class="s-desc">Coronas, centros y arreglos florales elaborados con flores frescas para honrar a tus seres queridos.</div>
+      </div>
+      <div class="service-card plain">
+        <span class="s-icon">⚱️</span>
+        <div class="s-title">Cremación</div>
+        <div class="s-desc">Servicio de cremación digno, con urnas de distintos materiales y estilos a elegir.</div>
+      </div>
+      <div class="service-card plain">
+        <span class="s-icon">📄</span>
+        <div class="s-title">Gestión de trámites</div>
+        <div class="s-desc">Nos encargamos de todos los documentos y trámites legales necesarios para que usted descanse.</div>
+      </div>
+      <div class="service-card light">
+        <span class="s-icon">🚐</span>
+        <div class="s-title">Traslados</div>
+        <div class="s-desc">Traslados locales y foráneos con unidades equipadas y personal capacitado.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TIENDA / CATÁLOGO
+============================================================ -->
+<section class="store" id="tienda">
+  <div class="section-inner">
+    <div class="store-hero">
+      <div class="store-hero-label">Catálogo en línea</div>
+      <h2 class="store-hero-title">Servicios y Artículos</h2>
+      <p class="store-hero-sub">Explora nuestros planes y productos. Si tienes dudas sobre alguno, contáctanos directamente.</p>
+      <a href="https://wa.me/522281845114" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block;">Solicitar cotización por WhatsApp</a>
+      <button class="admin-toggle" id="adminToggle">Administrar</button>
+    </div>
+
+    <div id="banner"></div>
+    <button class="add-btn" id="addBtn"></button>
+
+    <div class="tabs">
+      <button class="tab futuro active" data-segment="futuro">
+        <span class="tab-icon">🌱</span>
+        <div>
+          <div class="tab-title">Planes a Futuro</div>
+          <div class="tab-sub">Previsión y planeación</div>
+        </div>
+      </button>
+      <button class="tab inmediato" data-segment="inmediato">
+        <span class="tab-icon">🕯️</span>
+        <div>
+          <div class="tab-title">Servicio Inmediato</div>
+          <div class="tab-sub">Atención de urgencia</div>
+        </div>
+      </button>
+      <button class="tab otros" data-segment="otros">
+        <span class="tab-icon">🛍️</span>
+        <div>
+          <div class="tab-title">Otros Artículos</div>
+          <div class="tab-sub">Flores, urnas y más</div>
+        </div>
+      </button>
+    </div>
+
+    <div id="content" class="loading">Cargando catálogo…</div>
+  </div>
+</section>
+
+<!-- ============================================================
+     UBICACIÓN + FORMAS DE PAGO  (fondo crema cálido)
+============================================================ -->
+<section class="location-payments" id="ubicacion">
+  <div class="section-inner">
+    <div class="section-label">Encuéntranos</div>
+    <h2 class="section-title">Ubicación y formas de pago</h2>
+    <p class="section-desc">Visítanos en el centro de Xalapa o comunícate con nosotros para orientarte antes de llegar.</p>
+
+    <div class="lp-grid">
+      <!-- MAPA -->
+      <div>
+        <div class="map-box">
+          <iframe
+            title="Servicios Funerarios Huerta en Google Maps"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3769.1!2d-96.9275!3d19.5335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNikzMicwMC42Ik4gOTbCsDU1JzQ5LjAiVw!5e0!3m2!1ses!2smx!4v1700000000000"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+        <a href="https://maps.google.com/?q=Calle+Nicolas+Bravo+11+Xalapa+Veracruz+Mexico"
+           target="_blank" rel="noopener"
+           style="display:flex;align-items:center;gap:8px;margin-top:14px;color:var(--cafe);font-weight:600;font-size:14px;">
+          📍 Calle Nicolás Bravo No. 11, Zona Centro, Xalapa, Ver. — <span style="color:var(--cafe-med);text-decoration:underline;">Abrir en Google Maps</span>
+        </a>
+      </div>
+
+      <!-- PAGOS -->
+      <div>
+        <div class="section-label" style="margin-bottom:16px;">Formas de pago aceptadas</div>
+        <div class="pay-grid">
+          <div class="pay-card">
+            <span class="pay-icon">💵</span>
+            <div class="pay-name">Efectivo</div>
+            <div class="pay-desc">Pago directo en nuestras instalaciones o al momento del servicio.</div>
+          </div>
+          <div class="pay-card">
+            <span class="pay-icon">💳</span>
+            <div class="pay-name">Tarjeta</div>
+            <div class="pay-desc">Débito y crédito Visa, Mastercard y American Express.</div>
+          </div>
+          <div class="pay-card">
+            <span class="pay-icon">🏦</span>
+            <div class="pay-name">Transferencia</div>
+            <div class="pay-desc">SPEI / transferencia bancaria. Solicita los datos por WhatsApp.</div>
+          </div>
+          <div class="pay-card">
+            <span class="pay-icon">📱</span>
+            <div class="pay-name">CoDi / OXXO</div>
+            <div class="pay-desc">Pago vía CoDi, OXXO Pay o depósito en tienda de conveniencia.</div>
+          </div>
+          <div class="pay-card">
+            <span class="pay-icon">📋</span>
+            <div class="pay-name">Planes a meses</div>
+            <div class="pay-desc">Financiamiento sin intereses disponible en planes de previsión.</div>
+          </div>
+          <div class="pay-card">
+            <span class="pay-icon">🤝</span>
+            <div class="pay-name">Convenios</div>
+            <div class="pay-desc">Trabajamos con seguros de vida y convenios empresariales.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ — DUDAS Y ACLARACIONES  (fondo café oscuro, máx. contraste)
+============================================================ -->
+<section class="faq" id="dudas">
+  <div class="section-inner">
+    <div class="section-label">Dudas frecuentes</div>
+    <h2 class="section-title">Preguntas y aclaraciones</h2>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Atienden emergencias las 24 horas?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Sí. Contamos con personal disponible todos los días del año, las 24 horas. Solo llámanos al <a href="tel:+522281845114" style="color:var(--dorado);">228 468 4283</a> o escríbenos por WhatsApp y estaremos contigo de inmediato.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Qué incluye un plan de previsión a futuro?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Los planes de previsión cubren trámites legales, traslados, velación, ataúd y servicio de cremación o inhumación según el paquete elegido. Los precios quedan fijos al momento de contratar, sin importar cuándo se utilicen.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Puedo contratar un plan aunque ya sea mayor de edad?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Sí. Nuestros planes están disponibles para personas de cualquier edad. Contáctanos para orientarte sobre el plan más adecuado según tu situación.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Realizan traslados fuera de Xalapa?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Sí, realizamos traslados a nivel local, estatal y nacional. El costo varía según la distancia y las condiciones del servicio. Consúltanos para darte una cotización personalizada.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Cómo funciona el pago a meses?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Los planes de previsión se pueden pagar en mensualidades sin intereses. El monto y número de pagos se define al contratar. Aceptamos domiciliación bancaria, transferencia o pago en efectivo.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Trabajan con seguros de vida o IMSS?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Trabajamos con varias aseguradoras y podemos orientarte sobre cómo aplicar tu seguro de vida. Contáctanos con los datos de tu póliza y verificamos la cobertura sin costo adicional.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Qué documentos necesito para contratar un servicio inmediato?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">En casos de urgencia solo necesitas una identificación oficial del familiar responsable. Nosotros nos encargamos de gestionar el acta de defunción, los permisos sanitarios y todos los trámites necesarios.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          ¿Puedo personalizar el servicio?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Sí. Todos nuestros planes son personalizables. Puedes elegir el tipo de ataúd, arreglos florales, música, lugar de velación y más detalles. Cuéntanos qué necesitas y lo organizamos para ti.</div>
+      </div>
+
+    </div>
+
+    <div class="faq-cta">
+      <p>¿Tienes una duda que no está aquí? Escríbenos directamente y te respondemos de inmediato.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://wa.me/522281845114?text=Hola, tengo una duda sobre sus servicios" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-weight:700;padding:12px 22px;border-radius:999px;font-size:14px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.87.5 3.62 1.45 5.15L2 22l5.09-1.55a9.87 9.87 0 0 0 4.95 1.34h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.13-2.9-7C17.18 3.03 14.7 2 12.04 2zm0 18.05h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.02.92.92-2.94-.2-.31a8.2 8.2 0 0 1-1.27-4.38c0-4.54 3.7-8.24 8.26-8.24 2.21 0 4.28.86 5.84 2.42a8.18 8.18 0 0 1 2.42 5.83c0 4.55-3.7 8.03-8.46 8.03zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.18-.53.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.38.11-.51.12-.12.27-.31.41-.47.14-.16.18-.27.27-.45.08-.18.04-.33-.04-.46-.08-.12-.6-1.44-.82-1.98-.22-.53-.44-.46-.6-.46-.16-.01-.34-.01-.52-.01-.18 0-.46.07-.71.33-.25.27-.94.92-.94 2.24 0 1.32.97 2.6 1.1 2.78.14.18 1.9 2.9 4.6 3.95 2.7 1.05 2.7.7 3.19.66.49-.05 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.07-.1-.25-.16-.5-.28z"/></svg>
+          Preguntar por WhatsApp
+        </a>
+        <a href="tel:+522284684283"
+           style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.12);color:#fff;font-weight:700;padding:12px 22px;border-radius:999px;font-size:14px;border:1.5px solid rgba(255,255,255,0.25);">
+          📞 Llamar ahora
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACTO (fondo degradado café, con formulario)
+============================================================ -->
+<section class="contact" id="contacto">
+  <div class="section-inner">
+    <div class="section-label" style="color:var(--dorado);">Contáctanos</div>
+    <h2 class="section-title">Estamos para ayudarte</h2>
+    <p class="section-desc">Atención personalizada las 24 horas. Escríbenos, llámanos o visítanos.</p>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div class="contact-item-label">Dirección</div>
+              <div class="contact-item-val">Calle Nicolás Bravo No. 11,<br>Zona Centro, Xalapa, Veracruz</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div>
+              <div class="contact-item-label">Teléfono</div>
+              <div class="contact-item-val"><a href="tel:+522284684283">228 468 4283</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">💬</div>
+            <div>
+              <div class="contact-item-label">WhatsApp</div>
+              <div class="contact-item-val"><a href="https://wa.me/522281845114" target="_blank">228 184 5114</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">🕐</div>
+            <div>
+              <div class="contact-item-label">Horario</div>
+              <div class="contact-item-val">Atención 24 horas, 365 días</div>
+            </div>
+          </div>
+        </div>
+        <div class="social-btns" style="margin-top:28px;">
+          <a class="social-btn wa" href="https://wa.me/522281845114" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.87.5 3.62 1.45 5.15L2 22l5.09-1.55a9.87 9.87 0 0 0 4.95 1.34h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.13-2.9-7C17.18 3.03 14.7 2 12.04 2zm0 18.05h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.02.92.92-2.94-.2-.31a8.2 8.2 0 0 1-1.27-4.38c0-4.54 3.7-8.24 8.26-8.24 2.21 0 4.28.86 5.84 2.42a8.18 8.18 0 0 1 2.42 5.83c0 4.55-3.7 8.03-8.46 8.03zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.18-.53.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.38.11-.51.12-.12.27-.31.41-.47.14-.16.18-.27.27-.45.08-.18.04-.33-.04-.46-.08-.12-.6-1.44-.82-1.98-.22-.53-.44-.46-.6-.46-.16-.01-.34-.01-.52-.01-.18 0-.46.07-.71.33-.25.27-.94.92-.94 2.24 0 1.32.97 2.6 1.1 2.78.14.18 1.9 2.9 4.6 3.95 2.7 1.05 2.7.7 3.19.66.49-.05 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.07-.1-.25-.16-.5-.28z"/></svg>
+            Escríbenos por WhatsApp
+          </a>
+          <a class="social-btn fb" href="https://www.facebook.com/share/18SzTQdRZ8/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.51 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94z"/></svg>
+            Síguenos en Facebook
+          </a>
+        </div>
+      </div>
+
+      <!-- FORMULARIO DE CONTACTO -->
+      <div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dorado);margin-bottom:16px;">Envíanos un mensaje</div>
+        <form class="contact-form" id="contactForm">
+          <input type="text" id="cf_nombre" placeholder="Tu nombre" required />
+          <input type="tel" id="cf_tel" placeholder="Teléfono de contacto" />
+          <select id="cf_asunto">
+            <option value="" disabled selected>¿En qué te podemos ayudar?</option>
+            <option>Información sobre planes a futuro</option>
+            <option>Servicio inmediato</option>
+            <option>Cotización de arreglos florales</option>
+            <option>Servicio de cremación</option>
+            <option>Traslado</option>
+            <option>Formas de pago y financiamiento</option>
+            <option>Otra duda o aclaración</option>
+          </select>
+          <textarea id="cf_mensaje" placeholder="Escribe tu mensaje o duda aquí…"></textarea>
+          <button type="submit" class="send-btn">Enviar por WhatsApp →</button>
+          <div class="form-success" id="formSuccess">✅ Tu mensaje fue enviado. Te contactaremos pronto.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 <span>Servicios Funerarios Huerta</span> · Xalapa, Veracruz · Atención 24 horas
+</footer>
+
+<!-- FABs -->
+<div class="contact-fab">
+  <a class="fab-btn whatsapp" href="https://wa.me/522281845114" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.87.5 3.62 1.45 5.15L2 22l5.09-1.55a9.87 9.87 0 0 0 4.95 1.34h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.13-2.9-7C17.18 3.03 14.7 2 12.04 2zm0 18.05h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.02.92.92-2.94-.2-.31a8.2 8.2 0 0 1-1.27-4.38c0-4.54 3.7-8.24 8.26-8.24 2.21 0 4.28.86 5.84 2.42a8.18 8.18 0 0 1 2.42 5.83c0 4.55-3.7 8.03-8.46 8.03zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.18-.53.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.38.11-.51.12-.12.27-.31.41-.47.14-.16.18-.27.27-.45.08-.18.04-.33-.04-.46-.08-.12-.6-1.44-.82-1.98-.22-.53-.44-.46-.6-.46-.16-.01-.34-.01-.52-.01-.18 0-.46.07-.71.33-.25.27-.94.92-.94 2.24 0 1.32.97 2.6 1.1 2.78.14.18 1.9 2.9 4.6 3.95 2.7 1.05 2.7.7 3.19.66.49-.05 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.07-.1-.25-.16-.5-.28z"/></svg>
+  </a>
+  <a class="fab-btn facebook" href="https://www.facebook.com/SERVHUERTA" target="_blank" rel="noopener" aria-label="Facebook">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.51 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94z"/></svg>
+  </a>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" style="display:none">
+  <form class="modal" id="productForm">
+    <div class="modal-header">
+      <h2 id="modalTitle">Nuevo producto</h2>
+      <button type="button" class="close-btn" id="closeModal">✕</button>
+    </div>
+    <label>Segmento
+      <select id="f_segment">
+        <option value="futuro">Planes a Futuro</option>
+        <option value="inmediato">Servicio Inmediato</option>
+        <option value="otros">Otros Artículos</option>
       </select>
     </label>
-  );
-}
-function Table({ headers, children }) {
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
-        <thead><tr style={{ borderBottom: `1px solid ${T.border}` }}>
-          {headers.map((h) => <th key={h} style={{ color: T.textMuted }} className="text-left py-2 px-2 font-normal uppercase text-xs tracking-wider whitespace-nowrap">{h}</th>)}
-        </tr></thead>
-        <tbody>{children}</tbody>
-      </table>
-    </div>
-  );
-}
-function Td({ children, muted }) { return <td style={{ color: muted ? T.textMuted : T.text, borderBottom: `1px solid ${T.border}` }} className="py-2 px-2 whitespace-nowrap">{children}</td>; }
-function Pill({ children, tone = "info" }) {
-  const map = { success: { bg: T.successSoft, color: T.success }, danger: { bg: T.dangerSoft, color: T.danger }, info: { bg: "#1C2A3F", color: T.info } };
-  const s = map[tone];
-  return <span style={{ background: s.bg, color: s.color }} className="text-xs px-2 py-1 rounded-full uppercase tracking-wide">{children}</span>;
-}
+    <label>Categoría
+      <input id="f_categoria" placeholder="Ej. Plan de previsión, Cremación..." />
+    </label>
+    <label>Nombre del producto
+      <input id="f_nombre" required />
+    </label>
+    <label>Descripción
+      <textarea id="f_descripcion" rows="3"></textarea>
+    </label>
+    <label>Precio (MXN)
+      <input id="f_precio" type="number" min="0" required />
+    </label>
+    <label>Imagen (URL de Google Drive u otra fuente)
+      <input id="f_imagen" placeholder="https://drive.google.com/file/d/.../view?usp=sharing" />
+      <span class="hint">En Drive: Compartir → "Cualquier persona con el enlace". Se convierte automáticamente.</span>
+    </label>
+    <img id="imgPreview" class="preview-img" alt="Vista previa" />
+    <label>Código del producto (SKU)
+      <div class="sku-field">
+        <input id="f_id" readonly />
+        <button type="button" class="copy-btn-lg" id="copySkuBtn">Copiar</button>
+      </div>
+      <span class="hint">Se genera automáticamente. Úsalo para referenciar el producto en tus apps.</span>
+    </label>
+    <button type="submit" class="save-btn">Guardar</button>
+  </form>
+</div>
 
-const NAV = [
-  { id: "resumen", label: "Resumen General", icon: LayoutDashboard },
-  { id: "finanzas", label: "Control Financiero", icon: Wallet },
-  { id: "inmediato", label: "Ventas Inmediatas (ODS)", icon: ShoppingCart },
-  { id: "prevision", label: "Previsión a Futuro", icon: FileSignature },
-  { id: "rh", label: "Empleados / RH", icon: Users },
-  { id: "hormiga", label: "Gastos Hormiga", icon: Receipt },
-  { id: "vehiculos", label: "Vehículos", icon: Truck },
-  { id: "fijos", label: "Gastos Fijos", icon: Building },
-  { id: "proveedores", label: "Proveedores (Ataúdes/Urnas)", icon: Package },
-  { id: "rentabilidad", label: "Rentabilidad", icon: Gauge },
-  { id: "conexion", label: "Conexión de Apps", icon: Link2 },
-];
+<script>
+  /* ——————————————————————————————————————————
+     CONFIGURACIÓN
+  —————————————————————————————————————————— */
+  const API_URL = 'https://script.google.com/macros/s/AKfycbzJtOwVJ5m2ziBGW2nkQy57x1nOo5ZLuyLtcISgwK1uaMMkoVKsHglDrSBbeJe-idr3Mw/exec';
+  const ADMIN_PASSWORD = 'Danna.0203';
 
-function SealLogo({ size = 32 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
-      <circle cx="24" cy="24" r="22" stroke={T.bronze} strokeWidth="1.5" />
-      <circle cx="24" cy="24" r="17" stroke={T.bronze} strokeWidth="1" opacity="0.5" />
-      <path d="M24 14c0 4-4 5-4 9a4 4 0 008 0c0-4-4-5-4-9z" fill={T.bronze} opacity="0.9" />
-      <text x="24" y="38" textAnchor="middle" fontSize="9" fill={T.bronze} fontFamily="Fraunces, serif">H</text>
-    </svg>
-  );
-}
-
-function Dashboard() {
-  const [tab, setTab] = useState("resumen");
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-
-  const [empleados, setEmpleados] = useState(SEED_EMPLEADOS);
-  const [gastos, setGastos] = useState(SEED_GASTOS);
-  const [vehiculos, setVehiculos] = useState(SEED_VEHICULOS);
-  const [gastosFijos, setGastosFijos] = useState([]);
-  const [proveedoresDir, setProveedoresDir] = useState([]);
-  const [config, setConfig] = useState({ odsUrl: "", previsionUrl: "", tiendaUrl: "" });
-  const [odsData, setOdsData] = useState(SEED_ODS);
-  const [previsionData, setPrevisionData] = useState(SEED_PREVISION);
-  const [isDemoOds, setIsDemoOds] = useState(true);
-  const [isDemoPrevision, setIsDemoPrevision] = useState(true);
-  const [odsStatus, setOdsStatus] = useState({ state: "idle" });
-  const [previsionStatus, setPrevisionStatus] = useState({ state: "idle" });
-  const [cloudUrl, setCloudUrl] = useState("");
-  const [cloudStatus, setCloudStatus] = useState({ state: "idle" });
-
-  useEffect(() => {
-    (async () => {
-      setCloudUrl(getCloudUrl());
-      const [emp, gas, veh, gfijos, provs, cfg] = await Promise.all([
-        loadKey("empleados", SEED_EMPLEADOS),
-        loadKey("gastos-hormiga", SEED_GASTOS),
-        loadKey("vehiculos", SEED_VEHICULOS),
-        loadKey("gastos-fijos", []),
-        loadKey("proveedores-directorio", []),
-        loadKey("integracion-config", { odsUrl: "", previsionUrl: "", tiendaUrl: "" }),
-      ]);
-      setEmpleados(emp);
-      setGastos(gas);
-      setVehiculos(veh);
-      setGastosFijos(gfijos);
-      setProveedoresDir(provs);
-      setConfig(cfg);
-      setLoaded(true);
-      if (cfg.odsUrl) probarConexion("ods", cfg.odsUrl);
-      if (cfg.tiendaUrl) cargarProductos(cfg.tiendaUrl);
-      if (cfg.previsionUrl) probarConexion("prevision", cfg.previsionUrl);
-    })();
-  }, []);
-  useEffect(() => { if (loaded) saveKey("empleados", empleados); }, [empleados, loaded]);
-  useEffect(() => { if (loaded) saveKey("gastos-hormiga", gastos); }, [gastos, loaded]);
-  useEffect(() => { if (loaded) saveKey("vehiculos", vehiculos); }, [vehiculos, loaded]);
-  useEffect(() => { if (loaded) saveKey("gastos-fijos", gastosFijos); }, [gastosFijos, loaded]);
-  useEffect(() => { if (loaded) saveKey("proveedores-directorio", proveedoresDir); }, [proveedoresDir, loaded]);
-  useEffect(() => { if (loaded) saveKey("integracion-config", config); }, [config, loaded]);
-
-  const [empleadosStatus, setEmpleadosStatus] = useState({ state: "idle" });
-  const [productos, setProductos] = useState([]);
-  const [productosStatus, setProductosStatus] = useState({ state: "idle" });
-  const [tiendaStatus, setTiendaStatus] = useState({ state: "idle" });
-
-  async function probarTienda(url) {
-    setTiendaStatus({ state: "loading" });
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const data = await res.json();
-      if (!Array.isArray(data)) throw new Error("La respuesta no es una lista de productos.");
-      setTiendaStatus({ state: "ok", count: data.length });
-      cargarProductos(url);
-    } catch (err) {
-      setTiendaStatus({ state: "error", message: err.message });
-    }
+  /* —— LOGO: cambia este ID por el ID del archivo de tu logo en Google Drive —— */
+  const LOGO_DRIVE_ID = '';
+  if (LOGO_DRIVE_ID) {
+    const logoUrl = `https://lh3.googleusercontent.com/d/${LOGO_DRIVE_ID}`;
+    document.getElementById('heroLogo').src = logoUrl;
+    document.getElementById('aboutLogo').src = logoUrl;
   }
 
-  function toDirectImageUrl_(url) {
-    if (!url) return "";
-    const t = String(url).trim();
-    let m = t.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
-    if (m) return `https://lh3.googleusercontent.com/d/${m[1]}`;
-    m = t.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-    if (m && t.includes("drive.google.com")) return `https://lh3.googleusercontent.com/d/${m[1]}`;
-    m = t.match(/lh3\.googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)/);
-    if (m) return `https://lh3.googleusercontent.com/d/${m[1]}`;
+  /* ——————————————————————————————————————————
+     MENÚ MÓVIL
+  —————————————————————————————————————————— */
+  const mobileMenu = document.getElementById('mobileMenu');
+  document.getElementById('menuToggle').addEventListener('click', () => mobileMenu.classList.add('open'));
+  document.getElementById('mobileClose').addEventListener('click', () => mobileMenu.classList.remove('open'));
+  document.querySelectorAll('.mm-link').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  /* ——————————————————————————————————————————
+     CATÁLOGO
+  —————————————————————————————————————————— */
+  const SEGMENTS = {
+    futuro: { label: 'Planes a Futuro' },
+    inmediato: { label: 'Servicio Inmediato' },
+    otros: { label: 'Otros Artículos' },
+  };
+  const SKU_PREFIX = { futuro: 'FUT', inmediato: 'INM', otros: 'OTR' };
+
+  let products = [], segment = 'futuro', adminMode = false;
+
+  const contentEl   = document.getElementById('content');
+  const addBtn      = document.getElementById('addBtn');
+  const bannerEl    = document.getElementById('banner');
+  const modalOverlay= document.getElementById('modalOverlay');
+  const productForm = document.getElementById('productForm');
+  const imgPreview  = document.getElementById('imgPreview');
+  const imagenInput = document.getElementById('f_imagen');
+  const adminToggleBtn = document.getElementById('adminToggle');
+
+  /* Mostrar botón admin solo con ?admin=1 */
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('admin') === '1') adminToggleBtn.style.display = 'flex';
+
+  function formatPrice(n) {
+    return new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',maximumFractionDigits:0}).format(n);
+  }
+  function showBanner(msg) {
+    bannerEl.innerHTML = msg ? `<div class="banner">${msg}</div>` : '';
+  }
+
+  function generateSku(segKey) {
+    const prefix = SKU_PREFIX[segKey] || 'GEN';
+    const pat = new RegExp('^' + prefix + '-(\\d+)$');
+    let max = 0;
+    products.forEach(p => { const m = String(p.id).match(pat); if (m) { const n=parseInt(m[1],10); if(n>max)max=n; } });
+    return `${prefix}-${String(max+1).padStart(3,'0')}`;
+  }
+
+  function copyToClipboard(text, btn) {
+    const done = () => {
+      if (!btn) return;
+      const orig = btn.textContent; btn.textContent = '¡Copiado!'; btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => fbCopy(text, done));
+    } else { fbCopy(text, done); }
+  }
+  function fbCopy(text, done) {
+    const ta = document.createElement('textarea'); ta.value = text;
+    ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch(e) {} document.body.removeChild(ta);
+  }
+
+  function toDirectImageUrl(url) {
+    if (!url) return '';
+    const t = url.trim();
+    const m1 = t.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (m1) return `https://lh3.googleusercontent.com/d/${m1[1]}`;
+    const m2 = t.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (m2 && t.includes('drive.google.com')) return `https://lh3.googleusercontent.com/d/${m2[1]}`;
+    const m3 = t.match(/lh3\.googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)/);
+    if (m3) return `https://lh3.googleusercontent.com/d/${m3[1]}`;
     return t;
   }
 
-  function generarSkuProducto_(segmentKey, lista) {
-    const prefijos = { inmediato: "INM", futuro: "FUT", otros: "OTR" };
-    const prefix = prefijos[segmentKey] || "GEN";
-    const pat = new RegExp("^" + prefix + "-(\\d+)$");
-    let max = 0;
-    lista.forEach(p => { const mm = String(p.id).match(pat); if (mm) { const n = parseInt(mm[1], 10); if (n > max) max = n; } });
-    return `${prefix}-${String(max + 1).padStart(3, "0")}`;
-  }
+  // Leer parámetro ?producto=SKU para highlight desde la app de previsión
+  const productoParam = urlParams.get('producto');
 
-  async function cargarProductos(urlOverride) {
-    const url = urlOverride || config.tiendaUrl;
-    if (!url) { setProductosStatus({ state: "error", message: "Conecta primero la URL de la Tienda Virtual en Conexión de Apps" }); return; }
-    setProductosStatus({ state: "loading" });
+  async function loadProducts() {
+    contentEl.innerHTML = '<div class="loading">Cargando catálogo…</div>';
     try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("HTTP " + res.status);
+      const res = await fetch(API_URL);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
-      if (!Array.isArray(data)) throw new Error("La tienda no devolvió una lista de productos.");
-      const internos = await loadKey("productos-internos", {});
-      const merged = data.map(p => ({ ...p, precio: Number(p.precio) || 0, ...(internos[p.id] || {}) }));
-      setProductos(merged);
-      setProductosStatus({ state: "ok", count: merged.length });
-    } catch (err) {
-      setProductosStatus({ state: "error", message: err.message });
+      if (!Array.isArray(data)) throw new Error('Respuesta inesperada del servidor.');
+      products = data.map(p => ({...p, precio: Number(p.precio)}));
+    } catch(err) {
+      showBanner('No se pudo cargar el catálogo (' + err.message + '). Verifica la URL y permisos del Apps Script.');
+      products = [];
+    }
+    render();
+    // Si viene con ?producto=SKU, hacer scroll y resaltar ese producto
+    if (productoParam) {
+      setTimeout(() => {
+        const p = products.find(x => x.id === productoParam);
+        if (p) {
+          segment = p.segment;
+          render();
+          const cards = document.querySelectorAll('.card');
+          cards.forEach(card => {
+            const skuEl = card.querySelector('.card-sku span:nth-child(2)');
+            if (skuEl && skuEl.textContent.trim() === productoParam) {
+              card.style.outline = '3px solid var(--cafe)';
+              card.style.boxShadow = '0 0 0 6px rgba(61,31,15,0.18)';
+              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              setTimeout(() => { card.style.outline = ''; card.style.boxShadow = ''; }, 3000);
+            }
+          });
+        }
+      }, 400);
     }
   }
 
-  async function guardarProductoRemoto(datos, esNuevo) {
-    if (!config.tiendaUrl) throw new Error("No hay URL de Tienda Virtual conectada");
-    const payload = {
-      id: datos.id,
-      segment: datos.segment,
-      categoria: datos.categoria,
-      nombre: datos.nombre,
-      descripcion: datos.descripcion || "",
-      precio: Number(datos.precio) || 0,
-      imagen: toDirectImageUrl_(datos.imagen || ""),
-      action: esNuevo ? "add" : "update",
-    };
-    const res = await fetch(config.tiendaUrl, { method: "POST", body: JSON.stringify(payload) });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    // Guarda los datos internos (costo, proveedor, existencia) solo en el panel, no en la tienda pública
-    const internos = await loadKey("productos-internos", {});
-    internos[datos.id] = { costo: datos.costo || 0, proveedor: datos.proveedor || "", existencia: datos.existencia || 0 };
-    await saveKey("productos-internos", internos);
-    return { ok: true, id: datos.id, imagen: payload.imagen };
-  }
-
-  async function eliminarProductoRemoto(id) {
-    if (!config.tiendaUrl) throw new Error("No hay URL de Tienda Virtual conectada");
-    const res = await fetch(config.tiendaUrl, { method: "POST", body: JSON.stringify({ action: "delete", id }) });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const internos = await loadKey("productos-internos", {});
-    delete internos[id];
-    await saveKey("productos-internos", internos);
-    return { ok: true };
-  }
-
-  async function cambiarEstadoProductoRemoto(id, nuevoEstado) {
-    if (!config.tiendaUrl) throw new Error("No hay URL de Tienda Virtual conectada");
-    const accion = nuevoEstado === "reservado" ? "reservar" : "liberar";
-    const res = await fetch(config.tiendaUrl, { method: "POST", body: JSON.stringify({ action: accion, id }) });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    return res.json();
-  }
-
-  async function importarColaboradores(urlOverride) {
-    const url = urlOverride || config.odsUrl;
-    if (!url) { setEmpleadosStatus({ state: "error", message: "Primero conecta la URL de ODS en Conexión de Apps" }); return; }
-    setEmpleadosStatus({ state: "loading" });
-    try {
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ accion: "obtenerColaboradores" }),
-      });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const raw = await res.json();
-      const arr = extractArray_(raw);
-      if (!arr) { setEmpleadosStatus({ state: "error", message: "No se encontró una lista de colaboradores en la respuesta." }); return; }
-      setEmpleados(prev => {
-        const prevById = {};
-        prev.forEach(e => { prevById[e.id] = e; });
-        return arr.map(item => {
-          const id = String(pick_(item, ["idColaborador", "id"]) || uid());
-          const existing = prevById[id];
-          return {
-            id,
-            nombre: pick_(item, ["nombreCompleto", "nombre"]) || (existing ? existing.nombre : ""),
-            puesto: pick_(item, ["puesto"]) || (existing ? existing.puesto : ""),
-            fechaIngreso: pick_(item, ["fechaIngreso"]) || (existing ? existing.fechaIngreso : ""),
-            telefono: pick_(item, ["telefono"]) || (existing ? existing.telefono : ""),
-            domicilio: pick_(item, ["domicilio"]) || (existing ? existing.domicilio : ""),
-            familiarNombre: pick_(item, ["familiarNombre"]) || (existing ? existing.familiarNombre : ""),
-            familiarTelefono: pick_(item, ["familiarTelefono"]) || (existing ? existing.familiarTelefono : ""),
-            nota: pick_(item, ["nota"]) || (existing ? existing.nota : ""),
-            usuario: pick_(item, ["usuario"]) || (existing ? existing.usuario : ""),
-            pin: pick_(item, ["pin"]) || (existing ? existing.pin : ""),
-            estatus: pick_(item, ["estatus"]) || (existing ? existing.estatus : "ACTIVO"),
-            salario: existing ? existing.salario : 0,
-            _remote: item,
-          };
-        });
-      });
-      setEmpleadosStatus({ state: "ok", count: arr.length });
-    } catch (err) {
-      setEmpleadosStatus({ state: "error", message: err.message });
+  function render() {
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.segment === segment));
+    if (adminMode) {
+      addBtn.style.display = 'flex'; addBtn.className = `add-btn ${segment}`;
+      addBtn.textContent = `+ Agregar en ${SEGMENTS[segment].label}`;
+    } else { addBtn.style.display = 'none'; }
+    const visible = products.filter(p => p.segment === segment);
+    if (!visible.length) {
+      contentEl.innerHTML = `<div class="empty">Sin productos en este segmento.${adminMode?'<br/>Usa "Agregar" para crear el primero.':''}</div>`;
+      return;
     }
+    contentEl.innerHTML = `<div class="grid">${visible.map(cardHtml).join('')}</div>`;
   }
 
-  async function crearColaboradorRemoto(url, datos) {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ accion: "guardarColaborador", datos }),
-    });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    return res.json();
-  }
-
-  async function probarNube(url) {
-    setCloudStatus({ state: "loading" });
-    try {
-      const sep = url.includes("?") ? "&" : "?";
-      const res = await fetch(url + sep + "key=__test__");
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      await res.json();
-      setCloudUrlLocal(url);
-      setCloudUrl(url);
-      setCloudStatus({ state: "ok" });
-      const [emp, gas, veh] = await Promise.all([
-        cloudGet("empleados", url), cloudGet("gastos-hormiga", url), cloudGet("vehiculos", url),
-      ]);
-      if (emp !== undefined) setEmpleados(emp); else cloudSet("empleados", empleados);
-      if (gas !== undefined) setGastos(gas); else cloudSet("gastos-hormiga", gastos);
-      if (veh !== undefined) setVehiculos(veh); else cloudSet("vehiculos", vehiculos);
-    } catch (err) {
-      setCloudStatus({ state: "error", message: err.message });
-    }
-  }
-
-  const totalNomina = useMemo(() => empleados.filter(e => e.estatus === "ACTIVO").reduce((s, e) => s + Number(e.salario || 0), 0), [empleados]);
-  const totalGastosHormiga = useMemo(() => gastos.reduce((s, g) => s + Number(g.monto || 0), 0), [gastos]);
-  const totalVehiculos = useMemo(() => vehiculos.reduce((s, v) => s + v.gastos.reduce((a, g) => a + Number(g.monto || 0), 0), 0), [vehiculos]);
-  const totalGastosFijos = useMemo(() => gastosFijos.filter(g => g.activo !== false).reduce((s, g) => s + Number(g.monto || 0), 0), [gastosFijos]);
-  const totalInmediato = useMemo(() => odsData.reduce((s, o) => s + Number(o.total || 0), 0), [odsData]);
-  const porCobrarInmediato = useMemo(() => odsData.reduce((s, o) => s + Number(o.restante || 0), 0), [odsData]);
-  const totalPrevisionContratado = useMemo(() => previsionData.reduce((s, p) => s + Number(p.total || 0), 0), [previsionData]);
-  const totalPrevisionAbonado = useMemo(() => previsionData.reduce((s, p) => s + Number(p.abonado || 0), 0), [previsionData]);
-  const porCobrarPrevision = totalPrevisionContratado - totalPrevisionAbonado;
-  const gastosOperativosMes = totalNomina + totalGastosHormiga + totalVehiculos + totalGastosFijos;
-  const ingresosMes = totalInmediato + totalPrevisionAbonado;
-  const utilidadMes = ingresosMes - gastosOperativosMes;
-
-  const gastosPorCategoria = useMemo(() => {
-    const map = {};
-    gastos.forEach(g => { map[g.categoria] = (map[g.categoria] || 0) + Number(g.monto || 0); });
-    vehiculos.forEach(v => v.gastos.forEach(g => { map["Vehículos: " + g.tipo] = (map["Vehículos: " + g.tipo] || 0) + Number(g.monto || 0); }));
-    gastosFijos.filter(g => g.activo !== false).forEach(g => { map["Fijo: " + g.concepto] = (map["Fijo: " + g.concepto] || 0) + Number(g.monto || 0); });
-    map["Nómina"] = totalNomina;
-    return Object.entries(map).map(([name, value]) => ({ name, value }));
-  }, [gastos, vehiculos, gastosFijos, totalNomina]);
-
-  function extractArray_(data) {
-    if (Array.isArray(data)) return data;
-    if (data && typeof data === "object") {
-      for (const k of Object.keys(data)) {
-        if (Array.isArray(data[k])) return data[k];
-      }
-    }
-    return null;
-  }
-
-  function pick_(obj, candidates) {
-    for (const c of candidates) if (obj[c] !== undefined && obj[c] !== null) return obj[c];
-    const lower = {};
-    Object.keys(obj).forEach(k => { lower[k.toLowerCase()] = obj[k]; });
-    for (const c of candidates) {
-      const v = lower[c.toLowerCase()];
-      if (v !== undefined && v !== null) return v;
-    }
-    return undefined;
-  }
-
-  function normalizeOds_(arr) {
-    const num = (item, keys) => Number(pick_(item, keys) || 0);
-    return arr.map(item => {
-      const total = num(item, ["totalGeneral", "TOTAL", "PRECIO_TOTAL", "total"]);
-      const restante = num(item, ["restante", "RESTANTE", "SALDO"]);
-      const costoAtaud = num(item, ["costoAtaud"]);
-      const costoUrna = num(item, ["costoUrna"]);
-      const costoEmbalsamado = num(item, ["costoEmbalsamado"]);
-      const costoSala = num(item, ["costoSala"]);
-      const costoTraslado = num(item, ["costoTraslado"]);
-      const costoAdicionalCremacion = num(item, ["costoAdicionalCremacion"]);
-      const costoExcesoPeso = num(item, ["costoExcesoPeso"]);
-      const otrosCargos = num(item, ["otrosCargos"]);
-      const costoDirecto = costoAtaud + costoUrna + costoEmbalsamado + costoSala + costoTraslado + costoAdicionalCremacion + costoExcesoPeso + otrosCargos;
-      return {
-        folio: pick_(item, ["folio", "FOLIO"]) || "",
-        finado: pick_(item, ["fallecido", "FALLECIDO", "FINADO", "TITULAR", "finado"]) || "",
-        contratante: pick_(item, ["contratante", "CONTRATANTE"]) || "",
-        modalidadServicio: pick_(item, ["modalidadServicio"]) || "",
-        fechaCreacion: pick_(item, ["fechaCreacion"]) || "",
-        total,
-        restante,
-        costoAtaud, costoUrna, costoEmbalsamado, costoSala, costoTraslado, costoAdicionalCremacion, costoExcesoPeso, otrosCargos,
-        costoDirecto,
-        estatus: (pick_(item, ["estatus", "ESTATUS", "ESTADO_MANUAL"]) || (restante <= 0 ? "LIQUIDADO" : "PENDIENTE")) || "",
-      };
-    });
-  }
-
-  function normalizePrevision_(arr) {
-    return arr.map(item => {
-      const total = Number(pick_(item, ["PRECIO_TOTAL", "precioTotal", "TOTAL", "total"]) || 0);
-      const abonado = Number(pick_(item, ["PAGADO_A_LA_FECHA", "ABONADO", "abonado"]) || 0);
-      let estatus = pick_(item, ["ESTADO_MANUAL", "ESTATUS", "estatus"]) || "";
-      if (!estatus) estatus = total > 0 && abonado >= total ? "LIQUIDADO" : "VIGENTE";
-      return {
-        folio: pick_(item, ["FOLIO", "folio"]) || "",
-        titular: pick_(item, ["TITULAR", "titular"]) || "",
-        asesor: pick_(item, ["ASESOR", "asesor"]) || "",
-        total, abonado,
-        estatus: String(estatus).toUpperCase(),
-      };
-    });
-  }
-
-  async function probarConexion(tipo, urlOverride) {
-    const url = urlOverride || (tipo === "ods" ? config.odsUrl : config.previsionUrl);
-    if (!url) return;
-    const setStatus = tipo === "ods" ? setOdsStatus : setPrevisionStatus;
-    setStatus({ state: "loading" });
-    try {
-      let res;
-      if (tipo === "ods") {
-        res = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ accion: "obtenerODS", filtros: {} }),
-        });
-      } else {
-        res = await fetch(url);
-      }
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const raw = await res.json();
-      const arr = extractArray_(raw);
-      if (!arr) {
-        setStatus({ state: "error", message: "Conectó, pero el JSON no es una lista reconocible. Revisa el formato que devuelve tu script." });
-        return;
-      }
-      const normalized = tipo === "ods" ? normalizeOds_(arr) : normalizePrevision_(arr);
-      setStatus({ state: "ok", count: normalized.length });
-      if (tipo === "ods") { setOdsData(normalized); setIsDemoOds(false); }
-      if (tipo === "prevision") { setPrevisionData(normalized); setIsDemoPrevision(false); }
-    } catch (err) {
-      setStatus({ state: "error", message: err.message });
-    }
-  }
-
-  return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.text, fontFamily: "'Inter', sans-serif" }}>
-      <div className="md:hidden flex items-center justify-between px-4 py-3" style={{ borderBottom: `1px solid ${T.border}` }}>
-        <div className="flex items-center gap-2">
-          <SealLogo size={28} />
-          <span style={{ fontFamily: "'Fraunces', serif" }} className="text-sm tracking-wide">FUNERARIA HUERTA</span>
-        </div>
-        <button onClick={() => setMobileNavOpen(!mobileNavOpen)} style={{ color: T.bronze }}>
-          {mobileNavOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
-      </div>
-      {mobileNavOpen && (
-        <div className="md:hidden flex flex-col" style={{ borderBottom: `1px solid ${T.border}` }}>
-          {NAV.map(n => (
-            <button key={n.id} onClick={() => { setTab(n.id); setMobileNavOpen(false); }}
-              style={{ color: tab === n.id ? T.bronze : T.textMuted, borderTop: `1px solid ${T.border}` }}
-              className="flex items-center gap-3 px-4 py-3 text-sm text-left">
-              <n.icon size={16} /> {n.label}
-            </button>
-          ))}
-        </div>
-      )}
-      <div className="flex">
-        <aside className="hidden md:flex flex-col w-64 shrink-0 px-5 py-6 gap-6" style={{ borderRight: `1px solid ${T.border}`, minHeight: "100vh" }}>
-          <div className="flex items-center gap-3 px-1">
-            <SealLogo size={36} />
-            <div>
-              <div style={{ fontFamily: "'Fraunces', serif", letterSpacing: "0.04em" }} className="text-sm leading-tight">FUNERARIA<br/>HUERTA</div>
-              <div style={{ color: T.textMuted }} className="text-[11px] tracking-wider">PANEL DE CONTROL</div>
-            </div>
-          </div>
-          <nav className="flex flex-col gap-1">
-            {NAV.map(n => (
-              <button key={n.id} onClick={() => setTab(n.id)}
-                style={{ color: tab === n.id ? T.bronzeLight : T.textMuted, background: tab === n.id ? T.surfaceAlt : "transparent", borderLeft: tab === n.id ? `2px solid ${T.bronze}` : "2px solid transparent" }}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-md text-sm text-left transition-colors hover:text-[#EDEAE2]">
-                <n.icon size={16} /> {n.label}
-              </button>
-            ))}
-          </nav>
-          <div className="mt-auto text-[11px]" style={{ color: T.textMuted }}>
-            <div className="flex items-center gap-2 mb-1"><span style={{ width: 6, height: 6, borderRadius: 999, background: T.success }} />Datos guardados en este dispositivo</div>
-            v1.0 · Panel Huerta
-          </div>
-        </aside>
-        <main className="flex-1 px-4 md:px-8 py-6 md:py-8 max-w-6xl">
-          {tab === "resumen" && <ResumenTab {...{ ingresosMes, gastosOperativosMes, utilidadMes, porCobrarInmediato, porCobrarPrevision, empleados, vehiculos, gastosPorCategoria, totalGastosHormiga }} />}
-          {tab === "finanzas" && <FinanzasTab {...{ totalInmediato, totalPrevisionAbonado, totalNomina, totalGastosHormiga, totalVehiculos, gastosPorCategoria, ingresosMes, gastosOperativosMes, utilidadMes }} />}
-          {tab === "inmediato" && <InmediatoTab odsData={odsData} isDemo={isDemoOds} />}
-          {tab === "prevision" && <PrevisionTab data={previsionData} isDemo={isDemoPrevision} />}
-          {tab === "rh" && <RHTab empleados={empleados} setEmpleados={setEmpleados} totalNomina={totalNomina} odsUrl={config.odsUrl} importarColaboradores={importarColaboradores} empleadosStatus={empleadosStatus} crearColaboradorRemoto={crearColaboradorRemoto} />}
-          {tab === "hormiga" && <HormigaTab gastos={gastos} setGastos={setGastos} total={totalGastosHormiga} />}
-          {tab === "vehiculos" && <VehiculosTab vehiculos={vehiculos} setVehiculos={setVehiculos} total={totalVehiculos} />}
-          {tab === "fijos" && <GastosFijosTab gastosFijos={gastosFijos} setGastosFijos={setGastosFijos} total={totalGastosFijos} />}
-          {tab === "proveedores" && <ProveedoresTab productos={productos} tiendaUrl={config.tiendaUrl} productosStatus={productosStatus} cargarProductos={cargarProductos} guardarProductoRemoto={guardarProductoRemoto} eliminarProductoRemoto={eliminarProductoRemoto} cambiarEstadoProductoRemoto={cambiarEstadoProductoRemoto} setProductos={setProductos} generarSkuProducto={generarSkuProducto_} toDirectImageUrl={toDirectImageUrl_} proveedoresDir={proveedoresDir} setProveedoresDir={setProveedoresDir} />}
-          {tab === "rentabilidad" && <RentabilidadTab odsData={odsData} isDemoOds={isDemoOds} gastosFijosMes={gastosOperativosMes} />}
-          {tab === "conexion" && <ConexionTab config={config} setConfig={setConfig} odsStatus={odsStatus} previsionStatus={previsionStatus} probarConexion={probarConexion} cloudUrl={cloudUrl} cloudStatus={cloudStatus} probarNube={probarNube} tiendaStatus={tiendaStatus} probarTienda={probarTienda} />}
-        </main>
-      </div>
-    </div>
-  );
-}
-
-function ResumenTab({ ingresosMes, gastosOperativosMes, utilidadMes, porCobrarInmediato, porCobrarPrevision, empleados, vehiculos, gastosPorCategoria, totalGastosHormiga }) {
-  return (
-    <div>
-      <SectionTitle subtitle="Estatus general de la empresa" title="Resumen General" />
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <KpiCard label="Ingresos del mes" value={fmtMoney(ingresosMes)} icon={TrendingUp} />
-        <KpiCard label="Gastos del mes" value={fmtMoney(gastosOperativosMes)} icon={TrendingDown} />
-        <KpiCard label="Utilidad neta" value={fmtMoney(utilidadMes)} delta={utilidadMes >= 0 ? "Positiva" : "Negativa"} deltaGood={utilidadMes >= 0} icon={Wallet} />
-        <KpiCard label="Por cobrar total" value={fmtMoney(porCobrarInmediato + porCobrarPrevision)} icon={Receipt} />
-        <KpiCard label="Empleados activos" value={empleados.filter(e => e.estatus === "ACTIVO").length} icon={Users} />
-        <KpiCard label="Vehículos en flota" value={vehiculos.length} icon={Truck} />
-        <KpiCard label="Gastos hormiga (mes)" value={fmtMoney(totalGastosHormiga)} icon={Receipt} />
-        <KpiCard label="Equipos de velación activos" value="—" icon={Flame} />
-      </div>
-      <div className="grid md:grid-cols-2 gap-4 mb-6">
-        <Card>
-          <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Ingresos vs. gastos (6 meses)</div>
-          <ResponsiveContainer width="100%" height={240}>
-            <BarChart data={SEED_VENTAS_MES}>
-              <CartesianGrid stroke={T.border} vertical={false} />
-              <XAxis dataKey="mes" stroke={T.textMuted} fontSize={12} />
-              <YAxis stroke={T.textMuted} fontSize={12} tickFormatter={(v) => `${v / 1000}k`} />
-              <Tooltip contentStyle={{ background: T.surfaceAlt, border: `1px solid ${T.border}`, color: T.text }} formatter={(v) => fmtMoney(v)} />
-              <Legend wrapperStyle={{ fontSize: 12, color: T.textMuted }} />
-              <Bar dataKey="inmediato" name="Inmediato" fill={T.bronze} radius={[3, 3, 0, 0]} />
-              <Bar dataKey="prevision" name="Previsión" fill={T.info} radius={[3, 3, 0, 0]} />
-              <Bar dataKey="gastos" name="Gastos" fill={T.danger} radius={[3, 3, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </Card>
-        <Card>
-          <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Distribución de gastos</div>
-          <ResponsiveContainer width="100%" height={240}>
-            <PieChart>
-              <Pie data={gastosPorCategoria} dataKey="value" nameKey="name" innerRadius={55} outerRadius={90} paddingAngle={2}>
-                {gastosPorCategoria.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
-              </Pie>
-              <Tooltip contentStyle={{ background: T.surfaceAlt, border: `1px solid ${T.border}`, color: T.text }} formatter={(v) => fmtMoney(v)} />
-              <Legend wrapperStyle={{ fontSize: 11, color: T.textMuted }} />
-            </PieChart>
-          </ResponsiveContainer>
-        </Card>
-      </div>
-      <Card>
-        <div className="flex items-start gap-3">
-          <AlertCircle size={18} style={{ color: T.bronze }} className="mt-0.5 shrink-0" />
-          <p style={{ color: T.textMuted }} className="text-sm">
-            Las cifras de "Ventas Inmediatas" y "Previsión" se muestran con datos de ejemplo hasta que conectes tus dos aplicaciones desde la pestaña <b style={{ color: T.text }}>Conexión de Apps</b>. Los módulos de RH, Gastos Hormiga y Vehículos ya guardan tu información real en este navegador.
-          </p>
-        </div>
-      </Card>
-    </div>
-  );
-}
-
-function FinanzasTab(props) {
-  const { totalInmediato, totalPrevisionAbonado, totalNomina, totalGastosHormiga, totalVehiculos, gastosPorCategoria, ingresosMes, gastosOperativosMes, utilidadMes } = props;
-  const rows = [
-    { label: "Ingresos por servicios inmediatos (ODS)", value: totalInmediato },
-    { label: "Ingresos por abonos de previsión", value: totalPrevisionAbonado },
-    { label: "Nómina", value: -totalNomina },
-    { label: "Gastos hormiga", value: -totalGastosHormiga },
-    { label: "Gastos de vehículos", value: -totalVehiculos },
-  ];
-  return (
-    <div>
-      <SectionTitle subtitle="Consolidado de ingresos y egresos" title="Control Financiero" />
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-        <KpiCard label="Ingresos" value={fmtMoney(ingresosMes)} icon={TrendingUp} />
-        <KpiCard label="Egresos" value={fmtMoney(gastosOperativosMes)} icon={TrendingDown} />
-        <KpiCard label="Utilidad" value={fmtMoney(utilidadMes)} deltaGood={utilidadMes >= 0} icon={Wallet} />
-      </div>
-      <Card style={{ marginBottom: 16 }}>
-        <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Estado de resultados (mes en curso)</div>
-        <Table headers={["Concepto", "Monto"]}>
-          {rows.map(r => (
-            <tr key={r.label}><Td>{r.label}</Td><Td><span style={{ color: r.value < 0 ? T.danger : T.success }}>{fmtMoney(r.value)}</span></Td></tr>
-          ))}
-          <tr><Td><b>Utilidad neta</b></Td><Td><b style={{ color: utilidadMes >= 0 ? T.success : T.danger }}>{fmtMoney(utilidadMes)}</b></Td></tr>
-        </Table>
-      </Card>
-      <Card>
-        <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Detalle de gastos por categoría</div>
-        <Table headers={["Categoría", "Monto"]}>
-          {gastosPorCategoria.map(g => <tr key={g.name}><Td>{g.name}</Td><Td>{fmtMoney(g.value)}</Td></tr>)}
-        </Table>
-      </Card>
-    </div>
-  );
-}
-
-function DemoBanner({ appName }) {
-  return (
-    <Card style={{ marginBottom: 16, borderColor: T.bronze }}>
-      <div className="flex items-center gap-3">
-        <AlertCircle size={16} style={{ color: T.bronze }} />
-        <span style={{ color: T.textMuted }} className="text-sm">Mostrando datos de ejemplo. Conecta <b style={{ color: T.text }}>{appName}</b> en la pestaña "Conexión de Apps" para ver tu información real aquí.</span>
-      </div>
-    </Card>
-  );
-}
-
-function InmediatoTab({ odsData, isDemo }) {
-  const totalGeneral = odsData.reduce((s, o) => s + Number(o.total || 0), 0);
-  const totalCobrar = odsData.reduce((s, o) => s + Number(o.restante || 0), 0);
-  return (
-    <div>
-      <SectionTitle subtitle="Sincronizado con funeraria-huerta" title="Ventas Inmediatas (ODS)" />
-      {isDemo && <DemoBanner appName="Funeraria Huerta (ODS)" />}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-        <KpiCard label="Órdenes" value={odsData.length} icon={ShoppingCart} />
-        <KpiCard label="Total facturado" value={fmtMoney(totalGeneral)} icon={Wallet} />
-        <KpiCard label="Por cobrar" value={fmtMoney(totalCobrar)} icon={Receipt} />
-      </div>
-      <Card>
-        <Table headers={["Folio", "Finado", "Contratante", "Total", "Restante", "Estatus"]}>
-          {odsData.map(o => (
-            <tr key={o.folio}><Td muted>{o.folio}</Td><Td>{o.finado}</Td><Td>{o.contratante}</Td><Td>{fmtMoney(o.total)}</Td><Td>{fmtMoney(o.restante)}</Td>
-              <Td><Pill tone={o.estatus === "LIQUIDADO" ? "success" : "danger"}>{o.estatus}</Pill></Td></tr>
-          ))}
-        </Table>
-      </Card>
-    </div>
-  );
-}
-
-function PrevisionTab({ data, isDemo }) {
-  const total = data.reduce((s, p) => s + Number(p.total || 0), 0);
-  const abonado = data.reduce((s, p) => s + Number(p.abonado || 0), 0);
-  return (
-    <div>
-      <SectionTitle subtitle="Sincronizado con Prevision-app" title="Previsión a Futuro" />
-      {isDemo && <DemoBanner appName="Prevision-app" />}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-        <KpiCard label="Contratos" value={data.length} icon={FileSignature} />
-        <KpiCard label="Contratado total" value={fmtMoney(total)} icon={Wallet} />
-        <KpiCard label="Por cobrar" value={fmtMoney(total - abonado)} icon={Receipt} />
-      </div>
-      <Card>
-        <Table headers={["Folio", "Titular", "Asesor", "Total", "Abonado", "Estatus"]}>
-          {data.map(p => (
-            <tr key={p.folio}><Td muted>{p.folio}</Td><Td>{p.titular}</Td><Td>{p.asesor}</Td><Td>{fmtMoney(p.total)}</Td><Td>{fmtMoney(p.abonado)}</Td>
-              <Td><Pill tone={p.estatus === "LIQUIDADO" ? "success" : p.estatus === "CON ATRASO" ? "danger" : "info"}>{p.estatus}</Pill></Td></tr>
-          ))}
-        </Table>
-      </Card>
-    </div>
-  );
-}
-
-function RHTab({ empleados, setEmpleados, totalNomina, odsUrl, importarColaboradores, empleadosStatus, crearColaboradorRemoto }) {
-  const blank = { nombre: "", puesto: "VENDEDOR / ATENCIÓN", fechaIngreso: "", salario: "", telefono: "", domicilio: "", familiarNombre: "", familiarTelefono: "", usuario: "", contrasena: "", pin: "", nota: "" };
-  const [form, setForm] = useState(blank);
-  const [editingId, setEditingId] = useState(null);
-  const [saving, setSaving] = useState(false);
-  const [saveMsg, setSaveMsg] = useState(null);
-
-  const startEdit = (emp) => {
-    setForm({
-      nombre: emp.nombre || "", puesto: emp.puesto || "VENDEDOR / ATENCIÓN", fechaIngreso: emp.fechaIngreso || "",
-      salario: emp.salario || "", telefono: emp.telefono || "", domicilio: emp.domicilio || "",
-      familiarNombre: emp.familiarNombre || "", familiarTelefono: emp.familiarTelefono || "",
-      usuario: emp.usuario || "", contrasena: "", pin: emp.pin || "", nota: emp.nota || "",
-    });
-    setEditingId(emp.id);
-    setSaveMsg(null);
-  };
-  const cancelEdit = () => { setForm(blank); setEditingId(null); };
-
-  const guardar = async () => {
-    if (!form.nombre || !form.salario) return;
-    setSaveMsg(null);
-    const id = editingId || uid();
-    const previo = editingId ? empleados.find(e => e.id === editingId) : null;
-    const remotoPrevio = previo ? previo._remote || {} : {};
-    const remoto = {
-      ...remotoPrevio,
-      idColaborador: id,
-      fechaIngreso: form.fechaIngreso,
-      nombreCompleto: form.nombre,
-      puesto: form.puesto,
-      domicilio: form.domicilio,
-      telefono: form.telefono,
-      familiarNombre: form.familiarNombre,
-      familiarTelefono: form.familiarTelefono,
-      usuario: form.usuario,
-      contrasena: form.contrasena || remotoPrevio.contrasena || "",
-      pin: form.pin,
-      nota: form.nota,
-      estatus: previo ? previo.estatus : "ACTIVO",
-    };
-    const nuevo = {
-      id, nombre: form.nombre, puesto: form.puesto, fechaIngreso: form.fechaIngreso,
-      telefono: form.telefono, domicilio: form.domicilio, familiarNombre: form.familiarNombre,
-      familiarTelefono: form.familiarTelefono, nota: form.nota,
-      estatus: previo ? previo.estatus : "ACTIVO", salario: Number(form.salario),
-      usuario: form.usuario, pin: form.pin, _remote: remoto,
-    };
-    if (odsUrl) {
-      setSaving(true);
-      try {
-        const res = await crearColaboradorRemoto(odsUrl, remoto);
-        if (!res || res.ok === false) throw new Error((res && res.mensaje) || "el servidor rechazó el guardado");
-        setSaveMsg({ tone: "success", text: editingId ? "Colaborador actualizado en ambas apps." : "Colaborador creado y disponible para iniciar sesión en ambas apps." });
-      } catch (err) {
-        setSaveMsg({ tone: "danger", text: "No se guardó en tus apps (" + err.message + "). Se guardó solo aquí en el panel." });
-      } finally {
-        setSaving(false);
-      }
-    } else {
-      setSaveMsg({ tone: "danger", text: "No está conectada la URL de ODS, así que esto solo quedó guardado aquí, no en tus apps." });
-    }
-    setEmpleados(editingId ? empleados.map(e => e.id === id ? nuevo : e) : [...empleados, nuevo]);
-    setForm(blank);
-    setEditingId(null);
-  };
-  const remove = (id) => setEmpleados(empleados.filter(e => e.id !== id));
-  const toggle = async (emp) => {
-    const nuevoEstatus = emp.estatus === "ACTIVO" ? "INACTIVO" : "ACTIVO";
-    setEmpleados(empleados.map(e => e.id === emp.id ? { ...e, estatus: nuevoEstatus } : e));
-    if (odsUrl) {
-      try {
-        await crearColaboradorRemoto(odsUrl, {
-          ...(emp._remote || {}),
-          idColaborador: emp.id,
-          nombreCompleto: emp.nombre,
-          puesto: emp.puesto,
-          fechaIngreso: emp.fechaIngreso,
-          telefono: emp.telefono,
-          estatus: nuevoEstatus,
-        });
-        setSaveMsg({ tone: "success", text: `Estatus de ${emp.nombre} actualizado en ambas apps.` });
-      } catch (err) {
-        setSaveMsg({ tone: "danger", text: "El estatus cambió aquí, pero no se reflejó en tus apps: " + err.message });
-      }
-    } else {
-      setSaveMsg({ tone: "danger", text: "El estatus solo cambió aquí — conecta la URL de ODS para que también se actualice en tus apps." });
-    }
-  };
-  const setSalario = (id, val) => setEmpleados(empleados.map(e => e.id === id ? { ...e, salario: Number(val) || 0 } : e));
-  const EmpStatusBadge = () => {
-    if (empleadosStatus.state === "loading") return <Pill tone="info"><RefreshCw size={11} className="inline animate-spin mr-1" />Importando…</Pill>;
-    if (empleadosStatus.state === "ok") return <Pill tone="success"><CheckCircle2 size={11} className="inline mr-1" />{empleadosStatus.count} colaboradores importados</Pill>;
-    if (empleadosStatus.state === "error") return <Pill tone="danger"><AlertCircle size={11} className="inline mr-1" />{empleadosStatus.message}</Pill>;
-    return null;
-  };
-  return (
-    <div>
-      <SectionTitle subtitle="Plantilla operativa" title="Empleados / RH" />
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
-        <KpiCard label="Colaboradores activos" value={empleados.filter(e => e.estatus === "ACTIVO").length} icon={Users} />
-        <KpiCard label="Nómina mensual" value={fmtMoney(totalNomina)} icon={Wallet} />
-        <KpiCard label="Total registrados" value={empleados.length} icon={Users} />
-      </div>
-      <Card style={{ marginBottom: 16, borderColor: T.bronze }}>
-        <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Importar colaboradores reales de tu app</div>
-        <p style={{ color: T.textMuted }} className="text-sm mb-3">
-          Trae la lista de colaboradores ya registrados en tu app de Funeraria Huerta. El salario no se importa (tu app no lo guarda) — captúralo aquí una sola vez y se conserva aunque vuelvas a importar.
-        </p>
-        <div className="flex flex-wrap items-center gap-3">
-          <Btn icon={RefreshCw} onClick={() => importarColaboradores()} disabled={!odsUrl}>Importar desde la app</Btn>
-          <EmpStatusBadge />
-        </div>
-        {!odsUrl && <p style={{ color: T.textMuted }} className="text-xs mt-2">Primero conecta la URL de ODS en la pestaña "Conexión de Apps".</p>}
-      </Card>
-      <Card style={{ marginBottom: 16 }}>
-        <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">{editingId ? "Editar colaborador" : "Dar de alta colaborador (mismo acceso en las dos apps)"}</div>
-        <div className="grid md:grid-cols-3 gap-3 mb-3">
-          <Input label="Nombre completo" value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} />
-          <Select label="Puesto" value={form.puesto} onChange={e => setForm({ ...form, puesto: e.target.value })}>
-            <option>VENDEDOR / ATENCIÓN</option><option>CHOFER / LOGÍSTICA</option><option>ADMINISTRADOR GENERAL</option><option>EMBALSAMADOR</option><option>LIMPIEZA / MANTENIMIENTO</option>
-          </Select>
-          <Input label="Fecha de ingreso" type="date" value={form.fechaIngreso} onChange={e => setForm({ ...form, fechaIngreso: e.target.value })} />
-          <Input label="Salario mensual ($)" type="number" value={form.salario} onChange={e => setForm({ ...form, salario: e.target.value })} />
-          <Input label="Teléfono" value={form.telefono} onChange={e => setForm({ ...form, telefono: e.target.value })} />
-          <Input label="Domicilio" value={form.domicilio} onChange={e => setForm({ ...form, domicilio: e.target.value })} />
-          <Input label="Contacto familiar (nombre)" value={form.familiarNombre} onChange={e => setForm({ ...form, familiarNombre: e.target.value })} />
-          <Input label="Contacto familiar (teléfono)" value={form.familiarTelefono} onChange={e => setForm({ ...form, familiarTelefono: e.target.value })} />
-          <Input label="Notas" value={form.nota} onChange={e => setForm({ ...form, nota: e.target.value })} />
-        </div>
-        <div style={{ color: T.textMuted, borderTop: `1px solid ${T.border}` }} className="text-xs uppercase tracking-wider mb-3 pt-3">Acceso (usuario, contraseña y PIN — válidos en ambas apps)</div>
-        <div className="grid md:grid-cols-3 gap-3 mb-3">
-          <Input label="Usuario" value={form.usuario} onChange={e => setForm({ ...form, usuario: e.target.value })} />
-          <Input label="Contraseña" placeholder={editingId ? "(sin cambios si lo dejas vacío)" : ""} value={form.contrasena} onChange={e => setForm({ ...form, contrasena: e.target.value })} />
-          <Input label="PIN" value={form.pin} onChange={e => setForm({ ...form, pin: e.target.value })} />
-        </div>
-        <div className="flex items-center gap-3">
-          <Btn icon={editingId ? CheckCircle2 : Plus} onClick={guardar} disabled={saving}>{saving ? "Guardando…" : editingId ? "Guardar cambios" : "Registrar Colaborador"}</Btn>
-          {editingId && <Btn variant="ghost" onClick={cancelEdit}>Cancelar</Btn>}
-        </div>
-        {saveMsg && (
-          <p style={{ color: saveMsg.tone === "success" ? T.success : T.danger }} className="text-sm mt-2">{saveMsg.text}</p>
-        )}
-      </Card>
-      <Card>
-        {empleados.length === 0 ? (
-          <p style={{ color: T.textMuted }} className="text-sm text-center py-6">Aún no hay colaboradores. Impórtalos de tu app o regístralos manualmente arriba.</p>
-        ) : (
-          <Table headers={["Nombre", "Puesto", "Ingreso", "Salario", "Teléfono", "Estatus", ""]}>
-            {empleados.map(e => (
-              <tr key={e.id}><Td>{e.nombre}</Td><Td muted>{e.puesto}</Td><Td muted>{fmtDate(e.fechaIngreso)}</Td>
-                <Td>
-                  <input type="number" value={e.salario} onChange={ev => setSalario(e.id, ev.target.value)}
-                    style={{ background: T.surfaceAlt, border: `1px solid ${T.border}`, color: T.text, width: 90 }}
-                    className="rounded-md px-2 py-1 text-sm outline-none" />
-                </Td>
-                <Td muted>{e.telefono}</Td>
-                <Td><button onClick={() => toggle(e)}><Pill tone={e.estatus === "ACTIVO" ? "success" : "danger"}>{e.estatus}</Pill></button></Td>
-                <Td>
-                  <div className="flex items-center gap-2">
-                    <button onClick={() => startEdit(e)} style={{ color: T.bronze }}><Edit3 size={14} /></button>
-                    <button onClick={() => remove(e.id)} style={{ color: T.danger }}><Trash2 size={14} /></button>
-                  </div>
-                </Td></tr>
-            ))}
-          </Table>
-        )}
-      </Card>
-    </div>
-  );
-}
-
-const CATEGORIAS_HORMIGA = ["Cafetería / Atención", "Papelería", "Limpieza", "Propinas / Apoyos", "Mensajería", "Reparaciones menores", "Otro"];
-function HormigaTab({ gastos, setGastos, total }) {
-  const [form, setForm] = useState({ fecha: "", categoria: CATEGORIAS_HORMIGA[0], descripcion: "", monto: "", responsable: "" });
-  const add = () => {
-    if (!form.monto || !form.fecha) return;
-    setGastos([{ id: uid(), ...form, monto: Number(form.monto) }, ...gastos]);
-    setForm({ fecha: "", categoria: CATEGORIAS_HORMIGA[0], descripcion: "", monto: "", responsable: "" });
-  };
-  const remove = (id) => setGastos(gastos.filter(g => g.id !== id));
-  const porCategoria = useMemo(() => {
-    const map = {};
-    gastos.forEach(g => map[g.categoria] = (map[g.categoria] || 0) + Number(g.monto || 0));
-    return Object.entries(map).map(([name, value]) => ({ name, value }));
-  }, [gastos]);
-  return (
-    <div>
-      <SectionTitle subtitle="Gastos pequeños y recurrentes" title="Gastos Hormiga" />
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        <KpiCard label="Total acumulado" value={fmtMoney(total)} icon={Receipt} />
-        <KpiCard label="Registros" value={gastos.length} icon={Receipt} />
-      </div>
-      <div className="grid md:grid-cols-3 gap-4 mb-6">
-        <Card style={{ gridColumn: "span 2" }}>
-          <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Registrar gasto</div>
-          <div className="grid md:grid-cols-2 gap-3 mb-3">
-            <Input label="Fecha" type="date" value={form.fecha} onChange={e => setForm({ ...form, fecha: e.target.value })} />
-            <Select label="Categoría" value={form.categoria} onChange={e => setForm({ ...form, categoria: e.target.value })}>
-              {CATEGORIAS_HORMIGA.map(c => <option key={c}>{c}</option>)}
-            </Select>
-            <Input label="Descripción" value={form.descripcion} onChange={e => setForm({ ...form, descripcion: e.target.value })} />
-            <Input label="Monto ($)" type="number" value={form.monto} onChange={e => setForm({ ...form, monto: e.target.value })} />
-            <Input label="Responsable" value={form.responsable} onChange={e => setForm({ ...form, responsable: e.target.value })} />
-          </div>
-          <Btn icon={Plus} onClick={add}>Registrar Gasto</Btn>
-        </Card>
-        <Card>
-          <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Por categoría</div>
-          <ResponsiveContainer width="100%" height={180}>
-            <PieChart>
-              <Pie data={porCategoria} dataKey="value" nameKey="name" innerRadius={40} outerRadius={70}>
-                {porCategoria.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
-              </Pie>
-              <Tooltip contentStyle={{ background: T.surfaceAlt, border: `1px solid ${T.border}`, color: T.text }} formatter={(v) => fmtMoney(v)} />
-            </PieChart>
-          </ResponsiveContainer>
-        </Card>
-      </div>
-      <Card>
-        {gastos.length === 0 ? (
-          <p style={{ color: T.textMuted }} className="text-sm text-center py-6">Aún no has registrado gastos hormiga.</p>
-        ) : (
-          <Table headers={["Fecha", "Categoría", "Descripción", "Responsable", "Monto", ""]}>
-            {gastos.map(g => (
-              <tr key={g.id}><Td muted>{fmtDate(g.fecha)}</Td><Td>{g.categoria}</Td><Td muted>{g.descripcion}</Td><Td muted>{g.responsable}</Td><Td>{fmtMoney(g.monto)}</Td>
-                <Td><button onClick={() => remove(g.id)} style={{ color: T.danger }}><Trash2 size={14} /></button></Td></tr>
-            ))}
-          </Table>
-        )}
-      </Card>
-    </div>
-  );
-}
-
-const TIPOS_GASTO_VEHICULO = ["Combustible", "Mantenimiento", "Verificación", "Seguro", "Multas", "Lavado", "Otro"];
-function VehiculosTab({ vehiculos, setVehiculos, total }) {
-  const [form, setForm] = useState({ nombre: "", placas: "", tipo: "Carroza", kmActual: "" });
-  const [gastoForm, setGastoForm] = useState({});
-  const addVehiculo = () => {
-    if (!form.nombre) return;
-    setVehiculos([...vehiculos, { id: uid(), ...form, kmActual: Number(form.kmActual || 0), gastos: [] }]);
-    setForm({ nombre: "", placas: "", tipo: "Carroza", kmActual: "" });
-  };
-  const removeVehiculo = (id) => setVehiculos(vehiculos.filter(v => v.id !== id));
-  const addGasto = (vid) => {
-    const gf = gastoForm[vid];
-    if (!gf || !gf.monto) return;
-    setVehiculos(vehiculos.map(v => v.id === vid ? { ...v, gastos: [{ id: uid(), fecha: gf.fecha || "", tipo: gf.tipo || TIPOS_GASTO_VEHICULO[0], monto: Number(gf.monto), nota: gf.nota || "" }, ...v.gastos] } : v));
-    setGastoForm({ ...gastoForm, [vid]: { fecha: "", tipo: TIPOS_GASTO_VEHICULO[0], monto: "", nota: "" } });
-  };
-  const removeGasto = (vid, gid) => setVehiculos(vehiculos.map(v => v.id === vid ? { ...v, gastos: v.gastos.filter(g => g.id !== gid) } : v));
-  return (
-    <div>
-      <SectionTitle subtitle="Flota y mantenimiento" title="Control de Vehículos" />
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        <KpiCard label="Vehículos en flota" value={vehiculos.length} icon={Truck} />
-        <KpiCard label="Gasto total flota" value={fmtMoney(total)} icon={Wrench} />
-      </div>
-      <Card style={{ marginBottom: 16 }}>
-        <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Registrar vehículo</div>
-        <div className="grid md:grid-cols-4 gap-3 mb-3">
-          <Input label="Nombre / Unidad" value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} />
-          <Input label="Placas" value={form.placas} onChange={e => setForm({ ...form, placas: e.target.value })} />
-          <Select label="Tipo" value={form.tipo} onChange={e => setForm({ ...form, tipo: e.target.value })}>
-            <option>Carroza</option><option>Van</option><option>Vehículo de apoyo</option>
-          </Select>
-          <Input label="Kilometraje actual" type="number" value={form.kmActual} onChange={e => setForm({ ...form, kmActual: e.target.value })} />
-        </div>
-        <Btn icon={Plus} onClick={addVehiculo}>Agregar Vehículo</Btn>
-      </Card>
-      {vehiculos.length === 0 && (
-        <Card><p style={{ color: T.textMuted }} className="text-sm text-center py-6">Aún no has registrado vehículos en la flota.</p></Card>
-      )}
-      <div className="flex flex-col gap-4">
-        {vehiculos.map(v => {
-          const gf = gastoForm[v.id] || { fecha: "", tipo: TIPOS_GASTO_VEHICULO[0], monto: "", nota: "" };
-          const totalV = v.gastos.reduce((s, g) => s + Number(g.monto || 0), 0);
-          return (
-            <Card key={v.id}>
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                <div>
-                  <div style={{ fontFamily: "'Fraunces', serif" }} className="text-lg">{v.nombre}</div>
-                  <div style={{ color: T.textMuted }} className="text-xs">{v.tipo} · {v.placas} · {v.kmActual.toLocaleString()} km</div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Pill tone="info">{fmtMoney(totalV)} gastado</Pill>
-                  <button onClick={() => removeVehiculo(v.id)} style={{ color: T.danger }}><Trash2 size={16} /></button>
-                </div>
-              </div>
-              <div className="grid md:grid-cols-5 gap-2 mb-3 items-end">
-                <Input label="Fecha" type="date" value={gf.fecha} onChange={e => setGastoForm({ ...gastoForm, [v.id]: { ...gf, fecha: e.target.value } })} />
-                <Select label="Tipo" value={gf.tipo} onChange={e => setGastoForm({ ...gastoForm, [v.id]: { ...gf, tipo: e.target.value } })}>
-                  {TIPOS_GASTO_VEHICULO.map(t => <option key={t}>{t}</option>)}
-                </Select>
-                <Input label="Monto ($)" type="number" value={gf.monto} onChange={e => setGastoForm({ ...gastoForm, [v.id]: { ...gf, monto: e.target.value } })} />
-                <Input label="Nota" value={gf.nota} onChange={e => setGastoForm({ ...gastoForm, [v.id]: { ...gf, nota: e.target.value } })} />
-                <Btn icon={Plus} onClick={() => addGasto(v.id)}>Añadir</Btn>
-              </div>
-              <Table headers={["Fecha", "Tipo", "Nota", "Monto", ""]}>
-                {v.gastos.map(g => (
-                  <tr key={g.id}><Td muted>{fmtDate(g.fecha)}</Td>
-                    <Td><span className="inline-flex items-center gap-1">{g.tipo === "Combustible" ? <Fuel size={12} /> : g.tipo === "Seguro" ? <ShieldCheck size={12} /> : <Wrench size={12} />} {g.tipo}</span></Td>
-                    <Td muted>{g.nota}</Td><Td>{fmtMoney(g.monto)}</Td>
-                    <Td><button onClick={() => removeGasto(v.id, g.id)} style={{ color: T.danger }}><Trash2 size={13} /></button></Td></tr>
-                ))}
-              </Table>
-            </Card>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-const CATEGORIAS_FIJOS = ["Renta", "Pago de crédito/préstamo", "Seguro", "Servicios (luz/agua/internet)", "Software/suscripciones", "Otro"];
-function GastosFijosTab({ gastosFijos, setGastosFijos, total }) {
-  const blank = { concepto: "", categoria: CATEGORIAS_FIJOS[0], monto: "", diaPago: "", beneficiario: "", fechaInicio: "", fechaFin: "", saldoRestante: "", activo: true, nota: "" };
-  const [form, setForm] = useState(blank);
-  const [editingId, setEditingId] = useState(null);
-
-  const startEdit = (g) => { setForm({ ...blank, ...g }); setEditingId(g.id); };
-  const cancelEdit = () => { setForm(blank); setEditingId(null); };
-
-  const guardar = () => {
-    if (!form.concepto || !form.monto) return;
-    const registro = { ...form, id: editingId || uid(), monto: Number(form.monto) || 0, saldoRestante: form.saldoRestante === "" ? "" : Number(form.saldoRestante) || 0 };
-    setGastosFijos(editingId ? gastosFijos.map(g => g.id === editingId ? registro : g) : [...gastosFijos, registro]);
-    setForm(blank); setEditingId(null);
-  };
-  const remove = (id) => setGastosFijos(gastosFijos.filter(g => g.id !== id));
-  const toggleActivo = (id) => setGastosFijos(gastosFijos.map(g => g.id === id ? { ...g, activo: g.activo === false } : g));
-
-  return (
-    <div>
-      <SectionTitle subtitle="Rentas, créditos y compromisos recurrentes" title="Gastos Fijos" />
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        <KpiCard label="Total mensual (activos)" value={fmtMoney(total)} icon={Building} />
-        <KpiCard label="Conceptos registrados" value={gastosFijos.length} icon={Building} />
-      </div>
-
-      <Card style={{ marginBottom: 16 }}>
-        <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">{editingId ? "Editar concepto" : "Registrar gasto fijo"}</div>
-        <div className="grid md:grid-cols-3 gap-3 mb-3">
-          <Input label="Concepto (ej. Renta del local)" value={form.concepto} onChange={e => setForm({ ...form, concepto: e.target.value })} />
-          <Select label="Categoría" value={form.categoria} onChange={e => setForm({ ...form, categoria: e.target.value })}>
-            {CATEGORIAS_FIJOS.map(c => <option key={c}>{c}</option>)}
-          </Select>
-          <Input label="Monto mensual ($)" type="number" value={form.monto} onChange={e => setForm({ ...form, monto: e.target.value })} />
-          <Input label="Día de pago (1-31)" type="number" value={form.diaPago} onChange={e => setForm({ ...form, diaPago: e.target.value })} />
-          <Input label="Beneficiario / Acreedor" value={form.beneficiario} onChange={e => setForm({ ...form, beneficiario: e.target.value })} />
-          <Input label="Fecha de inicio" type="date" value={form.fechaInicio} onChange={e => setForm({ ...form, fechaInicio: e.target.value })} />
-          <Input label="Fecha fin (si es a plazo, ej. crédito)" type="date" value={form.fechaFin} onChange={e => setForm({ ...form, fechaFin: e.target.value })} />
-          <Input label="Saldo restante (si aplica)" type="number" value={form.saldoRestante} onChange={e => setForm({ ...form, saldoRestante: e.target.value })} />
-          <Input label="Nota" value={form.nota} onChange={e => setForm({ ...form, nota: e.target.value })} />
-        </div>
-        <div className="flex items-center gap-3">
-          <Btn icon={editingId ? CheckCircle2 : Plus} onClick={guardar}>{editingId ? "Guardar cambios" : "Registrar Gasto Fijo"}</Btn>
-          {editingId && <Btn variant="ghost" onClick={cancelEdit}>Cancelar</Btn>}
-        </div>
-      </Card>
-
-      <Card>
-        {gastosFijos.length === 0 ? (
-          <p style={{ color: T.textMuted }} className="text-sm text-center py-6">Aún no has registrado gastos fijos.</p>
-        ) : (
-          <Table headers={["Concepto", "Categoría", "Monto", "Día de pago", "Beneficiario", "Saldo restante", "Activo", ""]}>
-            {gastosFijos.map(g => (
-              <tr key={g.id}>
-                <Td>{g.concepto}</Td><Td muted>{g.categoria}</Td><Td>{fmtMoney(g.monto)}</Td>
-                <Td muted>{g.diaPago || "—"}</Td><Td muted>{g.beneficiario}</Td>
-                <Td muted>{g.saldoRestante !== "" && g.saldoRestante !== undefined ? fmtMoney(g.saldoRestante) : "—"}</Td>
-                <Td><button onClick={() => toggleActivo(g.id)}><Pill tone={g.activo !== false ? "success" : "danger"}>{g.activo !== false ? "Activo" : "Pausado"}</Pill></button></Td>
-                <Td>
-                  <div className="flex items-center gap-2">
-                    <button onClick={() => startEdit(g)} style={{ color: T.bronze }}><Edit3 size={14} /></button>
-                    <button onClick={() => remove(g.id)} style={{ color: T.danger }}><Trash2 size={14} /></button>
-                  </div>
-                </Td>
-              </tr>
-            ))}
-          </Table>
-        )}
-      </Card>
-    </div>
-  );
-}
-
-const TIPOS_PRODUCTO = ["Ataúd", "Urna"];
-const SEGMENTOS_TIENDA = { inmediato: "Servicio Inmediato", futuro: "Planes a Futuro", otros: "Otros Artículos" };
-function ProveedoresTab({ productos, tiendaUrl, productosStatus, cargarProductos, guardarProductoRemoto, eliminarProductoRemoto, cambiarEstadoProductoRemoto, setProductos, generarSkuProducto, toDirectImageUrl, proveedoresDir, setProveedoresDir }) {
-  const blank = { id: "", segment: "inmediato", categoria: "", nombre: "", descripcion: "", precio: "", imagen: "", costo: "", proveedor: "", existencia: "" };
-  const [form, setForm] = useState(blank);
-  const [editing, setEditing] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [msg, setMsg] = useState(null);
-
-  const blankProv = { nombre: "", categoria: "Ataúdes", contacto: "", telefono: "", correo: "", direccion: "", nota: "" };
-  const [provForm, setProvForm] = useState(blankProv);
-  const [editingProvId, setEditingProvId] = useState(null);
-  const guardarProveedor = () => {
-    if (!provForm.nombre) return;
-    const registro = { ...provForm, id: editingProvId || uid() };
-    setProveedoresDir(editingProvId ? proveedoresDir.map(p => p.id === editingProvId ? registro : p) : [...proveedoresDir, registro]);
-    setProvForm(blankProv); setEditingProvId(null);
-  };
-  const startEditProv = (p) => { setProvForm({ ...blankProv, ...p }); setEditingProvId(p.id); };
-  const removeProv = (id) => setProveedoresDir(proveedoresDir.filter(p => p.id !== id));
-
-  const StatusBadge = () => {
-    if (productosStatus.state === "loading") return <Pill tone="info"><RefreshCw size={11} className="inline animate-spin mr-1" />Cargando…</Pill>;
-    if (productosStatus.state === "ok") return <Pill tone="success"><CheckCircle2 size={11} className="inline mr-1" />{productosStatus.count} productos</Pill>;
-    if (productosStatus.state === "error") return <Pill tone="danger"><AlertCircle size={11} className="inline mr-1" />{productosStatus.message}</Pill>;
-    return null;
-  };
-
-  const startEdit = (p) => {
-    setForm({
-      id: p.id, segment: p.segment || "inmediato", categoria: p.categoria || "", nombre: p.nombre || "",
-      descripcion: p.descripcion || "", precio: p.precio || "", imagen: p.imagen || "",
-      costo: p.costo || "", proveedor: p.proveedor || "", existencia: p.existencia || "",
-    });
-    setEditing(true);
-  };
-
-  const guardar = async () => {
-    if (!form.nombre || !form.precio) return;
-    setSaving(true); setMsg(null);
-    const esNuevo = !editing;
-    const id = form.id || generarSkuProducto(form.segment, productos);
-    const datos = { ...form, id };
-    try {
-      const res = await guardarProductoRemoto(datos, esNuevo);
-      if (!res || res.ok === false) throw new Error((res && res.mensaje) || "el servidor rechazó el guardado");
-      setProductos(prev => {
-        const exists = prev.some(p => p.id === id);
-        const limpio = { ...datos, imagen: toDirectImageUrl(datos.imagen) };
-        return exists ? prev.map(p => p.id === id ? limpio : p) : [...prev, limpio];
-      });
-      setMsg({ tone: "success", text: editing ? "Producto actualizado en la Tienda Virtual." : "Producto agregado a la Tienda Virtual." });
-      setForm(blank); setEditing(false);
-    } catch (err) {
-      setMsg({ tone: "danger", text: "No se guardó: " + err.message });
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const eliminar = async (id) => {
-    try {
-      await eliminarProductoRemoto(id);
-      setProductos(prev => prev.filter(p => p.id !== id));
-    } catch (err) {
-      setMsg({ tone: "danger", text: "No se pudo eliminar: " + err.message });
-    }
-  };
-
-  const toggleEstado = async (p) => {
-    const nuevoEstado = (p.estado || "disponible") === "disponible" ? "reservado" : "disponible";
-    try {
-      await cambiarEstadoProductoRemoto(p.id, nuevoEstado);
-      setProductos(prev => prev.map(x => x.id === p.id ? { ...x, estado: nuevoEstado } : x));
-    } catch (err) {
-      setMsg({ tone: "danger", text: "No se pudo cambiar el estado: " + err.message });
-    }
-  };
-
-  const valorInventario = productos.reduce((s, p) => s + (Number(p.costo) || 0) * (Number(p.existencia) || 0), 0);
-  const previewUrl = toDirectImageUrl(form.imagen);
-
-  return (
-    <div>
-      <SectionTitle subtitle="Catálogo de tu Tienda Virtual" title="Proveedores" />
-      {!tiendaUrl && (
-        <Card style={{ marginBottom: 16, borderColor: T.bronze }}>
-          <p style={{ color: T.textMuted }} className="text-sm">Conecta primero la URL de la Tienda Virtual en la pestaña "Conexión de Apps" — lo que agregues aquí se guarda directo en tu catálogo público real.</p>
-        </Card>
-      )}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <KpiCard label="Productos en tienda" value={productos.length} icon={Package} />
-        <KpiCard label="Servicio inmediato" value={productos.filter(p => p.segment === "inmediato").length} icon={Package} />
-        <KpiCard label="Planes a futuro" value={productos.filter(p => p.segment === "futuro").length} icon={Package} />
-        <KpiCard label="Valor de inventario (interno)" value={fmtMoney(valorInventario)} icon={Wallet} />
-      </div>
-
-      <Card style={{ marginBottom: 16 }}>
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-          <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider">{editing ? "Editar producto" : "Agregar producto a la Tienda Virtual"}</div>
-          <div className="flex items-center gap-2">
-            <Btn icon={RefreshCw} variant="ghost" onClick={() => cargarProductos()} disabled={!tiendaUrl}>Actualizar lista</Btn>
-            <StatusBadge />
+  function cardHtml(p) {
+    const actions = adminMode
+      ? `<div style="display:flex;gap:6px;"><button class="icon-btn" onclick="editProduct('${p.id}')">✎</button><button class="icon-btn danger" onclick="deleteProduct('${p.id}')">🗑</button></div>`
+      : `<button class="request-btn ${p.segment}" onclick="window.open('https://wa.me/522281845114?text=Hola, me interesa el servicio: ${encodeURIComponent(p.nombre)}','_blank')">Solicitar información</button>`;
+    const imgUrl = toDirectImageUrl(p.imagen);
+    const media = imgUrl
+      ? `<img class="card-img" src="${imgUrl}" alt="${p.nombre}" onerror="this.outerHTML='<div class=\\'card-img-placeholder\\'>🕊️</div>'" />`
+      : `<div class="card-img-placeholder">🕊️</div>`;
+    return `
+      <div class="card ${p.segment}">
+        ${media}
+        <div class="card-body">
+          <span class="cat">${p.categoria||'General'}</span>
+          <h3>${p.nombre}</h3>
+          <p>${p.descripcion||''}</p>
+          ${adminMode?`<div class="card-sku">SKU: ${p.id} <button type="button" class="copy-btn" onclick="copySkuFromCard('${p.id}',this)">Copiar</button></div>`:''}
+          <div class="card-footer">
+            <span class="price">${formatPrice(p.precio)}</span>
+            ${actions}
           </div>
         </div>
-        <div className="grid md:grid-cols-3 gap-3 mb-3">
-          <Select label="Dónde aparece" value={form.segment} onChange={e => setForm({ ...form, segment: e.target.value })}>
-            {Object.entries(SEGMENTOS_TIENDA).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-          </Select>
-          <Input label="Categoría (ej. Ataúd, Urna)" value={form.categoria} onChange={e => setForm({ ...form, categoria: e.target.value })} />
-          <Input label="Nombre" value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} />
-          <Input label="Precio al cliente ($)" type="number" value={form.precio} onChange={e => setForm({ ...form, precio: e.target.value })} />
-          <Input label="Descripción" value={form.descripcion} onChange={e => setForm({ ...form, descripcion: e.target.value })} />
-        </div>
-        <div className="grid md:grid-cols-3 gap-3 mb-3 items-start">
-          <div className="md:col-span-2">
-            <Input label="Imagen (link de Google Drive u otra fuente)" placeholder="https://drive.google.com/file/d/.../view?usp=sharing" value={form.imagen} onChange={e => setForm({ ...form, imagen: e.target.value })} />
-            <p style={{ color: T.textMuted }} className="text-xs mt-1">En Drive: Compartir → "Cualquier persona con el enlace". Se convierte automáticamente al formato correcto.</p>
-          </div>
-          {previewUrl && (
-            <img src={previewUrl} alt="Vista previa" style={{ width: "100%", maxHeight: 110, objectFit: "cover", borderRadius: 8, border: `1px solid ${T.border}` }}
-              onError={e => { e.currentTarget.style.display = "none"; }} />
-          )}
-        </div>
-        <div style={{ color: T.textMuted, borderTop: `1px solid ${T.border}` }} className="text-xs uppercase tracking-wider mb-3 pt-3">Datos internos (solo visibles aquí en el panel, no en la tienda pública)</div>
-        <div className="grid md:grid-cols-3 gap-3 mb-3">
-          <Input label="Costo interno ($)" type="number" value={form.costo} onChange={e => setForm({ ...form, costo: e.target.value })} />
-          <Input label="Proveedor" value={form.proveedor} onChange={e => setForm({ ...form, proveedor: e.target.value })} />
-          <Input label="Existencia (piezas)" type="number" value={form.existencia} onChange={e => setForm({ ...form, existencia: e.target.value })} />
-        </div>
-        <div className="flex items-center gap-3">
-          <Btn icon={editing ? CheckCircle2 : Plus} onClick={guardar} disabled={saving || !tiendaUrl}>{saving ? "Guardando…" : editing ? "Guardar cambios" : "Agregar a la Tienda"}</Btn>
-          {editing && <Btn variant="ghost" onClick={() => { setForm(blank); setEditing(false); }}>Cancelar</Btn>}
-        </div>
-        {msg && <p style={{ color: msg.tone === "success" ? T.success : T.danger }} className="text-sm mt-2">{msg.text}</p>}
-      </Card>
+      </div>`;
+  }
 
-      <Card>
-        {productos.length === 0 ? (
-          <p style={{ color: T.textMuted }} className="text-sm text-center py-6">Aún no hay productos en el catálogo.</p>
-        ) : (
-          <Table headers={["Imagen", "Segmento", "Nombre", "Precio", "Costo interno", "Existencia", "Estado", ""]}>
-            {productos.map(p => (
-              <tr key={p.id}>
-                <Td>
-                  {p.imagen ? <img src={p.imagen} alt={p.nombre} style={{ width: 40, height: 40, objectFit: "cover", borderRadius: 6 }} onError={e => { e.currentTarget.style.display = "none"; }} /> : "—"}
-                </Td>
-                <Td muted>{SEGMENTOS_TIENDA[p.segment] || p.segment}</Td><Td>{p.nombre}</Td>
-                <Td>{fmtMoney(p.precio)}</Td><Td muted>{p.costo ? fmtMoney(p.costo) : "—"}</Td><Td muted>{p.existencia || "—"}</Td>
-                <Td>
-                  <button onClick={() => toggleEstado(p)}>
-                    <Pill tone={(p.estado || "disponible") === "disponible" ? "success" : "danger"}>{(p.estado || "disponible") === "disponible" ? "Disponible" : "Reservado"}</Pill>
-                  </button>
-                </Td>
-                <Td>
-                  <div className="flex items-center gap-2">
-                    <button onClick={() => startEdit(p)} style={{ color: T.bronze }}><Edit3 size={14} /></button>
-                    <button onClick={() => eliminar(p.id)} style={{ color: T.danger }}><Trash2 size={14} /></button>
-                  </div>
-                </Td>
-              </tr>
-            ))}
-          </Table>
-        )}
-      </Card>
+  window.copySkuFromCard = (id, btn) => copyToClipboard(id, btn);
 
-      <Card style={{ marginTop: 16, marginBottom: 16 }}>
-        <p style={{ color: T.textMuted }} className="text-sm">
-          Esto agrega/edita productos directamente en tu Tienda Virtual real — se ven igual ahí y, si tu app de Servicios Inmediatos usara esta misma URL, también ahí.
-        </p>
-      </Card>
+  // ── LIGHTBOX ──
+  window.openLightbox = function(url, nombre) {
+    const overlay = document.getElementById('lightboxOverlay');
+    document.getElementById('lightboxImg').src = url;
+    document.getElementById('lightboxCaption').textContent = nombre || '';
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  window.closeLightbox = function(event) {
+    if (event && event.target !== event.currentTarget && !event.target.classList.contains('lightbox-close')) return;
+    document.getElementById('lightboxOverlay').classList.remove('open');
+    document.getElementById('lightboxImg').src = '';
+    document.body.style.overflow = '';
+  };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') window.closeLightbox(); });
 
-      <SectionTitle subtitle="Contactos de tus proveedores" title="Directorio de Proveedores" />
-      <Card style={{ marginBottom: 16 }}>
-        <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">{editingProvId ? "Editar proveedor" : "Agregar proveedor"}</div>
-        <div className="grid md:grid-cols-3 gap-3 mb-3">
-          <Input label="Nombre / Empresa" value={provForm.nombre} onChange={e => setProvForm({ ...provForm, nombre: e.target.value })} />
-          <Select label="Categoría" value={provForm.categoria} onChange={e => setProvForm({ ...provForm, categoria: e.target.value })}>
-            <option>Ataúdes</option><option>Urnas</option><option>Flores/Arreglos</option><option>Transporte</option><option>Insumos/Embalsamado</option><option>Imprenta/Papelería</option><option>Otro</option>
-          </Select>
-          <Input label="Persona de contacto" value={provForm.contacto} onChange={e => setProvForm({ ...provForm, contacto: e.target.value })} />
-          <Input label="Teléfono" value={provForm.telefono} onChange={e => setProvForm({ ...provForm, telefono: e.target.value })} />
-          <Input label="Correo" value={provForm.correo} onChange={e => setProvForm({ ...provForm, correo: e.target.value })} />
-          <Input label="Dirección" value={provForm.direccion} onChange={e => setProvForm({ ...provForm, direccion: e.target.value })} />
-          <Input label="Nota" value={provForm.nota} onChange={e => setProvForm({ ...provForm, nota: e.target.value })} />
-        </div>
-        <div className="flex items-center gap-3">
-          <Btn icon={editingProvId ? CheckCircle2 : Plus} onClick={guardarProveedor}>{editingProvId ? "Guardar cambios" : "Agregar Proveedor"}</Btn>
-          {editingProvId && <Btn variant="ghost" onClick={() => { setProvForm(blankProv); setEditingProvId(null); }}>Cancelar</Btn>}
-        </div>
-      </Card>
-      <Card>
-        {proveedoresDir.length === 0 ? (
-          <p style={{ color: T.textMuted }} className="text-sm text-center py-6">Aún no has registrado proveedores.</p>
-        ) : (
-          <Table headers={["Nombre", "Categoría", "Contacto", "Teléfono", "Correo", ""]}>
-            {proveedoresDir.map(p => (
-              <tr key={p.id}>
-                <Td>{p.nombre}</Td><Td muted>{p.categoria}</Td><Td muted>{p.contacto}</Td><Td muted>{p.telefono}</Td><Td muted>{p.correo}</Td>
-                <Td>
-                  <div className="flex items-center gap-2">
-                    <button onClick={() => startEditProv(p)} style={{ color: T.bronze }}><Edit3 size={14} /></button>
-                    <button onClick={() => removeProv(p.id)} style={{ color: T.danger }}><Trash2 size={14} /></button>
-                  </div>
-                </Td>
-              </tr>
-            ))}
-          </Table>
-        )}
-      </Card>
-    </div>
-  );
-}
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => { segment = t.dataset.segment; render(); }));
 
-function RentabilidadTab({ odsData, isDemoOds, gastosFijosMes }) {
-  const ordenes = odsData;
-  const n = Math.max(ordenes.length, 1);
-  const costoFijoPorServicio = gastosFijosMes / n;
-
-  const filas = ordenes.map(o => {
-    const costoDirecto = o.costoDirecto || 0;
-    const margenBruto = (o.total || 0) - costoDirecto;
-    const utilidadNeta = margenBruto - costoFijoPorServicio;
-    const margenPct = o.total > 0 ? (utilidadNeta / o.total) * 100 : 0;
-    return { ...o, costoDirecto, margenBruto, utilidadNeta, margenPct };
+  adminToggleBtn.addEventListener('click', () => {
+    if (!adminMode) {
+      const pass = prompt('Contraseña de administrador:');
+      if (pass !== ADMIN_PASSWORD) { if (pass !== null) alert('Contraseña incorrecta.'); return; }
+    }
+    adminMode = !adminMode;
+    adminToggleBtn.classList.toggle('active', adminMode);
+    adminToggleBtn.textContent = adminMode ? 'Salir de administración' : 'Administrar';
+    render();
   });
 
-  const ingresos = filas.reduce((s, f) => s + (f.total || 0), 0);
-  const costosDirectos = filas.reduce((s, f) => s + f.costoDirecto, 0);
-  const costosFijosTotales = costoFijoPorServicio * filas.length;
-  const utilidadTotal = ingresos - costosDirectos - costosFijosTotales;
-  const margenPctTotal = ingresos > 0 ? (utilidadTotal / ingresos) * 100 : 0;
+  addBtn.addEventListener('click', () => openModal());
 
-  const composicion = [
-    { name: "Costos directos", value: costosDirectos },
-    { name: "Costos fijos asignados", value: costosFijosTotales },
-    { name: "Utilidad neta", value: Math.max(utilidadTotal, 0) },
-  ];
+  function openModal(product) {
+    document.getElementById('modalTitle').textContent = product ? 'Editar producto' : 'Nuevo producto';
+    document.getElementById('f_id').value = product ? product.id : generateSku(segment);
+    document.getElementById('f_segment').value = product ? product.segment : segment;
+    document.getElementById('f_categoria').value = product ? product.categoria : '';
+    document.getElementById('f_nombre').value = product ? product.nombre : '';
+    document.getElementById('f_descripcion').value = product ? product.descripcion : '';
+    document.getElementById('f_precio').value = product ? product.precio : '';
+    imagenInput.value = product ? (product.imagen||'') : '';
+    updatePreview(); modalOverlay.style.display = 'flex';
+  }
 
-  return (
-    <div>
-      <SectionTitle subtitle="¿Son rentables tus precios actuales?" title="Rentabilidad de Servicios" />
-      {isDemoOds && <DemoBanner appName="Funeraria Huerta (ODS)" />}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <KpiCard label="Ingresos (ODS)" value={fmtMoney(ingresos)} icon={TrendingUp} />
-        <KpiCard label="Costos directos" value={fmtMoney(costosDirectos)} icon={Package} />
-        <KpiCard label="Costos fijos asignados" value={fmtMoney(costosFijosTotales)} icon={Wallet} />
-        <KpiCard label="Utilidad neta estimada" value={fmtMoney(utilidadTotal)} delta={`${margenPctTotal.toFixed(1)}% margen`} deltaGood={utilidadTotal >= 0} icon={Gauge} />
-      </div>
+  function updatePreview() {
+    const url = toDirectImageUrl(imagenInput.value);
+    if (url) { imgPreview.src = url; imgPreview.style.display = 'block'; }
+    else { imgPreview.style.display = 'none'; imgPreview.src = ''; }
+  }
+  imagenInput.addEventListener('input', updatePreview);
+  imgPreview.addEventListener('error', () => { imgPreview.style.display = 'none'; });
+  document.getElementById('copySkuBtn').addEventListener('click', e => copyToClipboard(document.getElementById('f_id').value, e.currentTarget));
+  document.getElementById('closeModal').addEventListener('click', () => { modalOverlay.style.display = 'none'; });
 
-      <Card style={{ marginBottom: 16 }}>
-        <p style={{ color: T.textMuted }} className="text-sm">
-          Los costos fijos (nómina + vehículos + gastos hormiga del periodo) se reparten por partes iguales entre las {filas.length} órdenes registradas: {fmtMoney(costoFijoPorServicio)} por servicio. Si el número de servicios reales al mes es distinto a este conteo, ajusta el periodo en "Conexión de Apps" para una lectura más exacta.
-        </p>
-      </Card>
+  window.editProduct = id => { const p = products.find(x=>x.id===id); if(p) openModal(p); };
 
-      <div className="grid md:grid-cols-2 gap-4 mb-6">
-        <Card>
-          <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Composición del ingreso</div>
-          <ResponsiveContainer width="100%" height={220}>
-            <PieChart>
-              <Pie data={composicion} dataKey="value" nameKey="name" innerRadius={50} outerRadius={85} paddingAngle={2}>
-                {composicion.map((_, i) => <Cell key={i} fill={[T.danger, T.info, T.success][i % 3]} />)}
-              </Pie>
-              <Tooltip contentStyle={{ background: T.surfaceAlt, border: `1px solid ${T.border}`, color: T.text }} formatter={(v) => fmtMoney(v)} />
-              <Legend wrapperStyle={{ fontSize: 11, color: T.textMuted }} />
-            </PieChart>
-          </ResponsiveContainer>
-        </Card>
-        <Card>
-          <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Utilidad neta por servicio</div>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={filas.slice(0, 12)}>
-              <CartesianGrid stroke={T.border} vertical={false} />
-              <XAxis dataKey="folio" stroke={T.textMuted} fontSize={10} />
-              <YAxis stroke={T.textMuted} fontSize={11} tickFormatter={(v) => `${v / 1000}k`} />
-              <Tooltip contentStyle={{ background: T.surfaceAlt, border: `1px solid ${T.border}`, color: T.text }} formatter={(v) => fmtMoney(v)} />
-              <Bar dataKey="utilidadNeta" name="Utilidad neta" radius={[3, 3, 0, 0]}>
-                {filas.slice(0, 12).map((f, i) => <Cell key={i} fill={f.utilidadNeta >= 0 ? T.success : T.danger} />)}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </Card>
-      </div>
-
-      <Card>
-        {filas.length === 0 ? (
-          <p style={{ color: T.textMuted }} className="text-sm text-center py-6">No hay órdenes para analizar todavía.</p>
-        ) : (
-          <Table headers={["Folio", "Precio", "Costo directo", "Costo fijo asignado", "Utilidad neta", "Margen"]}>
-            {filas.map(f => (
-              <tr key={f.folio}>
-                <Td muted>{f.folio}</Td><Td>{fmtMoney(f.total)}</Td><Td>{fmtMoney(f.costoDirecto)}</Td>
-                <Td>{fmtMoney(costoFijoPorServicio)}</Td>
-                <Td><span style={{ color: f.utilidadNeta >= 0 ? T.success : T.danger }}>{fmtMoney(f.utilidadNeta)}</span></Td>
-                <Td><Pill tone={f.margenPct >= 20 ? "success" : f.margenPct >= 0 ? "info" : "danger"}>{f.margenPct.toFixed(1)}%</Pill></Td>
-              </tr>
-            ))}
-          </Table>
-        )}
-      </Card>
-    </div>
-  );
-}
-
-function ConexionTab({ config, setConfig, odsStatus, previsionStatus, probarConexion, cloudUrl, cloudStatus, probarNube, tiendaStatus, probarTienda }) {
-  const [urlInput, setUrlInput] = useState(cloudUrl || "");
-  useEffect(() => { setUrlInput(cloudUrl || ""); }, [cloudUrl]);
-  const StatusBadge = ({ status }) => {
-    if (status.state === "loading") return <Pill tone="info"><RefreshCw size={11} className="inline animate-spin mr-1" />Probando…</Pill>;
-    if (status.state === "ok") return <Pill tone="success"><CheckCircle2 size={11} className="inline mr-1" />Conectado · {status.count} registros</Pill>;
-    if (status.state === "error") return <Pill tone="danger"><AlertCircle size={11} className="inline mr-1" />Error: {status.message}</Pill>;
-    return <Pill tone="info">Sin probar</Pill>;
+  window.deleteProduct = async id => {
+    if (!confirm('¿Eliminar este producto?')) return;
+    try {
+      await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'delete',id})});
+      products = products.filter(p=>p.id!==id); render();
+    } catch(e) { showBanner('No se pudo eliminar. Intenta de nuevo.'); }
   };
-  const CloudBadge = ({ status }) => {
-    if (status.state === "loading") return <Pill tone="info"><RefreshCw size={11} className="inline animate-spin mr-1" />Conectando…</Pill>;
-    if (status.state === "ok") return <Pill tone="success"><CheckCircle2 size={11} className="inline mr-1" />Guardando en la nube</Pill>;
-    if (status.state === "error") return <Pill tone="danger"><AlertCircle size={11} className="inline mr-1" />Error: {status.message}</Pill>;
-    return <Pill tone="info">Guardando solo en este dispositivo</Pill>;
-  };
-  return (
-    <div>
-      <SectionTitle subtitle="Vincula tus aplicaciones" title="Conexión de Apps" />
 
-      <Card style={{ marginBottom: 16, borderColor: T.bronze }}>
-        <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Almacenamiento en la nube (RH, Gastos Hormiga, Vehículos)</div>
-        <p style={{ color: T.textMuted }} className="text-sm mb-3">
-          Pega aquí la URL de tu Google Apps Script para que estos datos se guarden en un Google Sheet y se vean igual desde cualquier dispositivo, en vez de quedar solo en este navegador.
-        </p>
-        <div className="flex flex-col md:flex-row gap-3 items-end mb-2">
-          <div className="flex-1 w-full">
-            <Input label="URL del Apps Script de almacenamiento" placeholder="https://script.google.com/macros/s/XXXX/exec" value={urlInput} onChange={e => setUrlInput(e.target.value)} />
-          </div>
-          <Btn icon={RefreshCw} onClick={() => probarNube(urlInput)}>Conectar</Btn>
-        </div>
-        <CloudBadge status={cloudStatus} />
-      </Card>
+  productForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const payload = {
+      id: document.getElementById('f_id').value,
+      segment: document.getElementById('f_segment').value,
+      categoria: document.getElementById('f_categoria').value,
+      nombre: document.getElementById('f_nombre').value,
+      descripcion: document.getElementById('f_descripcion').value,
+      precio: Number(document.getElementById('f_precio').value)||0,
+      imagen: toDirectImageUrl(imagenInput.value),
+    };
+    const exists = products.some(p=>p.id===payload.id);
+    payload.action = exists ? 'update' : 'add';
+    try {
+      await fetch(API_URL,{method:'POST',body:JSON.stringify(payload)});
+      if (exists) { products = products.map(p=>p.id===payload.id?payload:p); }
+      else { products.push(payload); }
+      modalOverlay.style.display = 'none'; render();
+    } catch(e) { showBanner('No se pudo guardar. Intenta de nuevo.'); }
+  });
 
-      <Card style={{ marginBottom: 16 }}>
-        <p style={{ color: T.textMuted }} className="text-sm mb-2">
-          Tus apps ya sincronizan su información con Google Sheets mediante un Google Apps Script. Pega aquí la URL de cada Web App (termina en <code style={{ color: T.bronzeLight }}>/exec</code>) para que este panel jale tus datos reales.
-        </p>
-      </Card>
-      <Card style={{ marginBottom: 16 }}>
-        <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Funeraria Huerta — Ventas Inmediatas (ODS)</div>
-        <div className="flex flex-col md:flex-row gap-3 items-end mb-2">
-          <div className="flex-1 w-full">
-            <Input label="URL del Apps Script (Web App)" placeholder="https://script.google.com/macros/s/XXXX/exec" value={config.odsUrl} onChange={e => setConfig({ ...config, odsUrl: e.target.value })} />
-          </div>
-          <Btn icon={RefreshCw} onClick={() => probarConexion("ods")}>Probar Conexión</Btn>
-        </div>
-        <StatusBadge status={odsStatus} />
-      </Card>
-      <Card style={{ marginBottom: 16 }}>
-        <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Prevision-app — Ventas a Futuro</div>
-        <div className="flex flex-col md:flex-row gap-3 items-end mb-2">
-          <div className="flex-1 w-full">
-            <Input label="URL del Apps Script (Web App)" placeholder="https://script.google.com/macros/s/XXXX/exec" value={config.previsionUrl} onChange={e => setConfig({ ...config, previsionUrl: e.target.value })} />
-          </div>
-          <Btn icon={RefreshCw} onClick={() => probarConexion("prevision")}>Probar Conexión</Btn>
-        </div>
-        <StatusBadge status={previsionStatus} />
-      </Card>
-      <Card style={{ marginBottom: 16 }}>
-        <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-3">Tienda Virtual — Catálogo público (ataúdes/urnas/planes)</div>
-        <div className="flex flex-col md:flex-row gap-3 items-end mb-2">
-          <div className="flex-1 w-full">
-            <Input label="URL del Apps Script (Web App)" placeholder="https://script.google.com/macros/s/XXXX/exec" value={config.tiendaUrl} onChange={e => setConfig({ ...config, tiendaUrl: e.target.value })} />
-          </div>
-          <Btn icon={RefreshCw} onClick={() => probarTienda(config.tiendaUrl)}>Probar Conexión</Btn>
-        </div>
-        <StatusBadge status={tiendaStatus} />
-      </Card>
-      <Card>
-        <div style={{ color: T.textMuted }} className="text-xs uppercase tracking-wider mb-2">Si ves un error al probar</div>
-        <ul style={{ color: T.textMuted }} className="text-sm list-disc pl-5 space-y-1">
-          <li>Verifica que el Apps Script esté implementado como "Aplicación web" con acceso "Cualquier persona".</li>
-          <li>Si el JSON que devuelve no es una lista simple (folio, total, estatus, etc.), avísame el formato exacto para ajustar el panel.</li>
-        </ul>
-      </Card>
-    </div>
-  );
-}
+  loadProducts();
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<Dashboard />);
+  /* ——————————————————————————————————————————
+     FAQ ACCORDION
+  —————————————————————————————————————————— */
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  /* ——————————————————————————————————————————
+     FORMULARIO DE CONTACTO → abre WhatsApp
+  —————————————————————————————————————————— */
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const nombre  = document.getElementById('cf_nombre').value.trim();
+      const tel     = document.getElementById('cf_tel').value.trim();
+      const asunto  = document.getElementById('cf_asunto').value;
+      const mensaje = document.getElementById('cf_mensaje').value.trim();
+      const texto = `Hola, soy *${nombre}*${tel ? ' (Tel: ' + tel + ')' : ''}.\n*Asunto:* ${asunto || 'Consulta general'}\n\n${mensaje}`;
+      window.open('https://wa.me/522281845114?text=' + encodeURIComponent(texto), '_blank');
+      document.getElementById('formSuccess').style.display = 'block';
+      setTimeout(() => { document.getElementById('formSuccess').style.display = 'none'; }, 5000);
+      contactForm.reset();
+    });
+  }
 </script>
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt="">
+  <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
 </body>
 </html>
